@@ -3,8 +3,7 @@ const ctx = canvas.getContext('2d')
 
 const app = require('canvas-loop')(ctx.canvas, {
   scale: Math.min(2, window.devicePixelRatio)
-})
-app.start()
+}).start()
 
 const loadSvg = require('load-svg')
 const extractSvg = require('extract-svg-path').parse
@@ -18,12 +17,7 @@ const unindex = require('unindex-mesh')
 const random = require('random-float')
 const array = require('new-array')
 
-const gl = require('webgl-context')()
-const maxSize = gl ? gl.getParameter(gl.MAX_TEXTURE_SIZE) : 0
-let lowEnd = false
-if (maxSize <= 4096 * 2) {
-  lowEnd = true // stupid "Low End" Mobile/FF test
-}
+const lowEnd = require('./is-low-end')()
 
 const randomVector = (scale = 1) => {
   return array(3).map(() => random(-scale, scale))
