@@ -39,7 +39,7 @@
   },
   "scripts": {
     "start": "budo src/1.js:static/1.js --live -- -t [ babelify --presets es2015 ] -t [ installify --save ]",
-    "build": "browserify src/1.js -t [ babelify --presets es2015 ] | uglifyjs -cm > static.js"
+    "build": "browserify src/1.js -t [ babelify --presets es2015 ] | uglifyjs -cm > static/1.js"
   },
   "keywords": [],
   "repository": {
