@@ -50,9 +50,10 @@
     "uglify-js": "^2.5.0"
   },
   "scripts": {
-    "1": "budo src/1.js:static/1.js --live -- -t [ babelify --presets es2015 ] -t [ installify --save ]",
     "start": "node dev.js",
-    "build": "browserify src/1.js -t [ babelify --presets es2015 ] | uglifyjs -cm > static/1.js"
+    "build": "npm run build-1 && npm run build-2",
+    "build-1": "browserify src/1.js -t [ babelify --presets es2015 ] | uglifyjs -cm > static/1.js",
+    "build-2": "browserify src/2.js -t [ babelify --presets es2015 ] | uglifyjs -cm > static/2.js"
   },
   "keywords": [],
   "repository": {
