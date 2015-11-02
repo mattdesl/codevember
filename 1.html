@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, shrink-to-fit=0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+  <title>codevember - 1 - @mattdesl</title>
+  <link href='http://fonts.googleapis.com/css?family=Noto+Sans' rel='stylesheet' type='text/css'>
+  <style type="text/css">
+  body {
+    font-family: 'Noto Sans', Helvetica, sans-serif;
+    font-size: 15px;
+    overflow: hidden;
+    color: #fff;
+    -webkit-font-smoothing: antialiased;
+  }
+  span {
+    opacity: 0.75;
+    display: block;
+    font-size: 12px;
+    padding-top: 2px;
+  }
+  canvas {
+    display: block;
+    position: fixed;
+  }
+  div {
+    position: absolute;
+    z-index: 10;    
+  }
+  .link, .link:active, .info:visited {
+    text-decoration: none;
+    color: #fff;
+    z-index: 10;
+    position: relative;
+  }
+  .link:hover {
+  }
+  .link::after, .link:hover::after {
+    content: ' ';
+    width: 100%;
+    left: 0;
+    background: #fff;
+    position: absolute;
+    -webkit-transition: all 0.05s ease-out;
+    -moz-transition: all 0.05s ease-out;
+    -ms-transition: all 0.05s ease-out;
+    -o-transition: all 0.05s ease-out;
+    transition: all 0.05s ease-out;
+  }
+  .link::after {
+    height: 0px;
+    bottom: 0px;
+  }
+  .link:hover::after {
+    height: 4px;
+    bottom: -4px;
+  }
+  </style>
+</head>
+<body>
+  <canvas class="canvas"></canvas>
+  <div>
+  <a class="link" target="_blank" href="https://twitter.com/mattdesl">codevember/1</a>
+  <span>click shape to break</span>
+  </div>
+  <script src="static/1.js"></script>
+</body>
+</html>

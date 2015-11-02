@@ -1,0 +1,53 @@
+{
+  "name": "codevember",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "license": "MIT",
+  "author": {
+    "name": "Matt DesLauriers",
+    "email": "dave.des@gmail.com",
+    "url": "https://github.com/mattdesl"
+  },
+  "dependencies": {
+    "2d-context": "^1.3.0",
+    "canvas-loop": "^1.0.6",
+    "draw-triangles-2d": "^1.0.0",
+    "extract-svg-path": "^2.1.0",
+    "gl-vec2": "^1.0.0",
+    "load-svg": "^1.0.0",
+    "mesh-reindex": "^1.0.0",
+    "new-array": "^1.0.0",
+    "parse-svg-path": "^0.1.1",
+    "random-float": "^1.0.0",
+    "svg-camera-icon": "^1.0.0",
+    "svg-mesh-3d": "^1.0.1",
+    "svg-path-contours": "^2.0.0",
+    "triangle-centroid": "^1.0.0",
+    "unindex-mesh": "^1.0.1",
+    "verlet-constraint": "^1.0.3",
+    "verlet-point": "^1.2.1",
+    "verlet-system": "^1.0.15"
+  },
+  "devDependencies": {
+    "babel-preset-es2015": "^6.0.15",
+    "babelify": "^7.1.0",
+    "browserify": "^12.0.1",
+    "budo": "^6.0.0",
+    "installify": "^1.0.2",
+    "uglify-js": "^2.5.0"
+  },
+  "scripts": {
+    "start": "budo src/1.js:static/1.js --live -- -t [ babelify --presets es2015 ] -t [ installify --save ]",
+    "build": "browserify src/1.js -t [ babelify --presets es2015 ] | uglifyjs -cm > static.js"
+  },
+  "keywords": [],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/mattdesl/codevember.git"
+  },
+  "homepage": "https://github.com/mattdesl/codevember",
+  "bugs": {
+    "url": "https://github.com/mattdesl/codevember/issues"
+  }
+}
