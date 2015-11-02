@@ -70,12 +70,15 @@ function start (icon) {
     return tri
   }).reduce((a, b) => a.concat(b), [])
 
-  window.addEventListener('click', () => {
+  const onClick = (ev) => {
+    ev.preventDefault()
     world.gravity = [0, 600]
     world.points.forEach(point => {
       point.addForce(randomVector(5))
     })
-  })
+  }
+  window.addEventListener('click', onClick)
+  window.addEventListener('touchstart', onClick)
   
   app.on('tick', (dt) => {
     dt = Math.min(dt, 30)
