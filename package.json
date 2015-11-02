@@ -27,7 +27,8 @@
     "unindex-mesh": "^1.0.1",
     "verlet-constraint": "^1.0.3",
     "verlet-point": "^1.2.1",
-    "verlet-system": "^1.0.15"
+    "verlet-system": "^1.0.15",
+    "webgl-context": "^2.2.0"
   },
   "devDependencies": {
     "babel-preset-es2015": "^6.0.15",

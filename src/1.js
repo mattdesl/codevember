@@ -18,7 +18,14 @@ const unindex = require('unindex-mesh')
 const random = require('random-float')
 const array = require('new-array')
 
-const randomVector = (scale=1) => {
+const gl = require('webgl-context')()
+const maxSize = gl ? gl.getParameter(gl.MAX_TEXTURE_SIZE) : 0
+let lowEnd = false
+if (maxSize <= 4096 * 2) {
+  lowEnd = true // stupid "Low End" Mobile/FF test
+}
+
+const randomVector = (scale = 1) => {
   return array(3).map(() => random(-scale, scale))
 }
 
@@ -35,7 +42,7 @@ loadSvg('assets/feather.svg', (err, svg) => {
 
 function start (icon) {
   let mesh = svgMesh(icon, {
-    randomization: 500,
+    randomization: lowEnd ? 100 : 500,
     simplify: 0.01,
     scale: 10
   })
@@ -44,28 +51,28 @@ function start (icon) {
 
   mesh.positions = mesh.positions.map(x => {
     const size = 125
-    return [ 
-      x[0] * size + window.innerWidth/2, 
-      -x[1] * size + window.innerHeight/2 ]
+    return [
+      x[0] * size + window.innerWidth / 2,
+      -x[1] * size + window.innerHeight / 2 ]
   })
 
   world.points = mesh.positions.map(pos => {
     return createPoint({ position: pos })
   })
-   
+
   const constraints = mesh.cells.map(cell => {
     const points = cell.map(i => world.points[i])
-    
+
     // adjust mass
     points.forEach(pt => {
       pt.mass = random(0.65, 1.0)
     })
-    
+
     const opt = { stiffness: 1 }
     const tri = [
-      createConstraint([ points[0], points[1] ], opt),
-      createConstraint([ points[1], points[2] ], opt),
-      createConstraint([ points[2], points[0] ], opt)
+      createConstraint([ points[0], points[1]], opt),
+      createConstraint([ points[1], points[2]], opt),
+      createConstraint([ points[2], points[0]], opt)
     ]
     return tri
   }).reduce((a, b) => a.concat(b), [])
@@ -77,28 +84,29 @@ function start (icon) {
       point.addForce(randomVector(5))
     })
   }
-  window.addEventListener('click', onClick)
-  window.addEventListener('touchstart', onClick)
-  
+
+  canvas.addEventListener('click', onClick)
+  canvas.addEventListener('touchstart', onClick)
+
   app.on('tick', (dt) => {
     dt = Math.min(dt, 30)
-    
+
     const [width, height] = app.shape
     ctx.save()
     ctx.scale(app.scale, app.scale)
     ctx.clearRect(0, 0, width, height)
-    
-    const grad = ctx.createLinearGradient(-width*0.5, 0, width*1.5, 0)
+
+    const grad = ctx.createLinearGradient(-width * 0.5, 0, width * 1.5, 0)
     grad.addColorStop(0, '#e356c0')
     grad.addColorStop(1, '#e77b23')
     ctx.fillStyle = grad
     ctx.fillRect(0, 0, width, height)
-    
+
     ctx.beginPath()
     world.max[1] = height
     constraints.forEach(c => c.solve())
     world.integrate(world.points, dt / 1000)
-    
+
     const positions = world.points.map(x => x.position)
     drawTriangles(ctx, positions, mesh.cells)
     ctx.fillStyle = '#fff'
