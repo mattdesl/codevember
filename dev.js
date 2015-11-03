@@ -3,6 +3,7 @@ const argv = require('minimist')(process.argv.slice(2))
 const path = require('path')
 const babelify = require('babelify')
 const open = require('opn')
+const fs = require('fs')
 
 const entry = argv._[0]
 if (!entry) throw new Error('must specify an entry script')
@@ -13,6 +14,9 @@ budo(entryFile, {
   live: true,
   dir: __dirname,
   stream: process.stdout,
+  defaultIndex: function () {
+    return fs.createReadStream(entry + '.html')
+  },
   browserify: {
     transform: [
       babelify.configure({ presets: ['es2015'] }),

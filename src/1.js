@@ -2,7 +2,8 @@ const canvas = document.querySelector('canvas')
 const ctx = canvas.getContext('2d')
 
 const app = require('canvas-loop')(ctx.canvas, {
-  scale: Math.min(2, window.devicePixelRatio)
+  scale: Math.min(2, window.devicePixelRatio),
+  parent: () => [ window.innerWidth, window.innerHeight ]
 }).start()
 
 const loadSvg = require('load-svg')
