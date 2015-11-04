@@ -8,6 +8,10 @@ files = files.filter(function (f) {
   return /^\d+\.js$/.test(f)
 })
 
+const transforms = {
+  '3': ['glslify']
+}
+
 files.forEach(function (f) {
   console.log('Bundling', f)
   var b = browserify('src/' + f, {
@@ -15,6 +19,10 @@ files.forEach(function (f) {
   })
   b.transform(require('babelify').configure({ presets: 'es2015' }))
   b.plugin(require('bundle-collapser/plugin'))
+  var base = path.basename(f, '.js')
+  ;(transforms[base] || []).forEach(function (t) {
+    b.transform(t)
+  })
   b.bundle(function (err, src) {
     if (err) throw err
     console.log('Compressing', f)
