@@ -101,11 +101,11 @@ require('soundcloud-badge')({
 
   function compute () {
     const freqs = analyser.frequencies()
-    const lowBass = getAverage(freqs, 0, 80)
-    const highBass = getAverage(freqs, 80, 320)
+    const lowBass = getAverage(freqs, 0, 50)
+    // const highBass = getAverage(freqs, 80, 320)
     const midrange = getAverage(freqs, 320, 1280)
-    const lowTreble = getAverage(freqs, 1280, 5120)
-    const highTreble = getAverage(freqs, 20480, sampleRate)
+    const lowTreble = getAverage(freqs, 4000, 4500)
+    // const highTreble = getAverage(freqs, 20480, sampleRate)
 
     for (var i=0; i < freqLow.length; i++) {
       freqLow[i] = lowBass

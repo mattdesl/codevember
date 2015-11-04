@@ -18,18 +18,10 @@ void main() {
   else if (ring == 1) freq = freqMid;
   else if (ring == 2) freq = freqHigh;
   
-  float angle = atan(position.y, position.x) * 1024.0 + freq + iGlobalTime;
+  float angle = atan(position.y, position.x) * 1024.0;
   vec3 offset = position.xyz;
   float movement = sin(cos(iGlobalTime));
-  offset.z = noise(vec4(position.xy * freq, angle, movement)) * 1.9;
-  // offset.z = position.z;
-  //noise(vec4(position.xyz, freq));
-  // offset.xy += noise(vec4(position.yyy, iGlobalTime));
-  // offset.x += noise(vec4(position.xyz, freq * 2.0)) * 0.25;
-  // offset.x += noise(vec4(position.xyz, freq * 1.0)) * 0.05;
-  // offset += noise(vec4(position.xyz, freq)) * 0.5;
-  // offset.z += noise(vec3(angle, iGlobalTime, freq)) * 0.15;
-  
+  offset.z = noise(vec4(position.xy * freq, angle, movement)) * 1.25;
   gl_Position = projectionMatrix *
               modelViewMatrix *
               vec4(offset, 1.0);
