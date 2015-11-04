@@ -17,8 +17,6 @@ require('soundcloud-badge')({
   dark: true,
   getFonts: true
 }, function (err, src, data, div) {
-  if (err) throw err
-  
   const app = createOrbitViewer({
     clearColor: 0xffffff,
     clearAlpha: 1,
@@ -35,9 +33,15 @@ require('soundcloud-badge')({
   app.controls.noZoom = true
 
   var play = document.querySelector('.play')
-  const audio = new Audio()
-  audio.crossOrigin = 'Anonymous'
-  audio.src = src
+  let audio
+  if (!err) {
+    audio = new Audio()
+    audio.crossOrigin = 'Anonymous'
+    audio.src = src
+  } else {
+    console.warn("No music!")
+    console.error(err)
+  }
   
   const geometry = new THREE.TorusGeometry(0.95, 0.15, 65, 200)
   const freqLow = newArray(geometry.vertices.length, 0.0)
@@ -83,14 +87,14 @@ require('soundcloud-badge')({
   })
   
   let analyser, sampleRate, fftSize
-  if (AudioContext) {
+  if (audio && AudioContext) {
     analyser = createAnalyser(audio, { stereo: false })
     const analyserNode = analyser.analyser
     sampleRate = analyser.ctx.sampleRate
     fftSize = analyserNode.fftSize
   }
   
-  if (!isMobile) {
+  if (!isMobile || !audio) {
     start()
   } else {
     play.style.display = 'flex'
@@ -113,9 +117,10 @@ require('soundcloud-badge')({
   
   function start () {
     document.body.removeChild(play)
-    audio.play()
+    if (audio) audio.play()
     rings.forEach((ring, i, list) => {
-      const a = lerp(0.5, 0.7, i / (list.length - 1))
+      let a = lerp(0.5, 0.7, i / (list.length - 1))
+      if (isMobile) a *= 0.7
       ring.scale.set(a, a, a)
       app.scene.add(ring)
     })

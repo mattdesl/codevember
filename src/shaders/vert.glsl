@@ -1,7 +1,6 @@
 
 #pragma glslify: noise = require('glsl-noise/simplex/4d')
 
-varying vec3 vNorm;
 varying vec2 vUv;
 uniform int ring;
 attribute float freqLow;
@@ -11,7 +10,6 @@ attribute float freqHigh;
 uniform float iGlobalTime;
 void main() {
   vUv = uv;
-  vNorm = position.xyz;
   
   float freq = 0.0;
   if (ring == 0) freq = freqLow;
