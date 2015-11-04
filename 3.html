@@ -4,8 +4,37 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, shrink-to-fit=0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
   <title>codevember - 3 - @mattdesl</title>
+  <style>
+  body {
+    overflow: hidden;
+    background: white;
+  }
+  .center {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+  }
+  .play {
+    /*background: rgba(0,0,0,0.5);*/
+  }
+  .icon {
+    width: 25vw;
+  }
+  .button {
+    display: inline-block;
+    margin: auto;
+  }
+  </style>
 </head>
 <body>
+  <div class="center play" style="display: none;">
+    <a class="button">
+      <img src="assets/play.svg" class="icon" />
+    </a>
+  </div>
   <script src="static/3.js"></script>
 </body>
 </html>

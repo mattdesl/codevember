@@ -6,6 +6,11 @@ const lerp = require('lerp')
 const glslify = require('glslify')
 const newArray = require('new-array')
 
+const AudioContext = window.AudioContext || window.webkitAudioContext
+
+// dumb mobile test
+const isMobile = /(iPad|iPhone|Android)/i.test(navigator.userAgent)
+
 require('soundcloud-badge')({
   client_id: 'b95f61a90da961736c03f659c03cb0cc',
   song: 'https://soundcloud.com/else-official/else-zephyr',
@@ -13,11 +18,7 @@ require('soundcloud-badge')({
   getFonts: true
 }, function (err, src, data, div) {
   if (err) throw err
-
-  const audio = new Audio()
-  audio.crossOrigin = 'Anonymous'
-  audio.src = src
-  audio.play()
+  
   const app = createOrbitViewer({
     clearColor: 0xffffff,
     clearAlpha: 1,
@@ -32,11 +33,12 @@ require('soundcloud-badge')({
   app.controls.noRotate = true
   app.controls.noPan = true
   app.controls.noZoom = true
-  const analyser = createAnalyser(audio, { stereo: false })
-  const analyserNode = analyser.analyser
-  const sampleRate = analyser.ctx.sampleRate
-  const { fftSize } = analyserNode
 
+  var play = document.querySelector('.play')
+  const audio = new Audio()
+  audio.crossOrigin = 'Anonymous'
+  audio.src = src
+  
   const geometry = new THREE.TorusGeometry(0.95, 0.15, 65, 200)
   const freqLow = newArray(geometry.vertices.length, 0.0)
   const freqMid = freqLow.slice()
@@ -67,7 +69,6 @@ require('soundcloud-badge')({
   
   const attribList = Object.keys(material.attributes).map(k => material.attributes[k])
   
-  
   const colors = [
     '#000000',
     '#df18a4',
@@ -81,11 +82,22 @@ require('soundcloud-badge')({
     return new THREE.Mesh(geometry, mat)
   })
   
-  rings.forEach((ring, i, list) => {
-    const a = lerp(0.5, 0.7, i / (list.length - 1))
-    ring.scale.set(a, a, a)
-    app.scene.add(ring)
-  })
+  let analyser, sampleRate, fftSize
+  if (AudioContext) {
+    analyser = createAnalyser(audio, { stereo: false })
+    const analyserNode = analyser.analyser
+    sampleRate = analyser.ctx.sampleRate
+    fftSize = analyserNode.fftSize
+  }
+  
+  if (!isMobile) {
+    start()
+  } else {
+    play.style.display = 'flex'
+    document.body.removeChild(play)
+    document.body.appendChild(play)
+    play.addEventListener('click', start, false)
+  }
   
   app.on('tick', dt => {
     rings.forEach(ring => {
@@ -95,10 +107,19 @@ require('soundcloud-badge')({
       ring.rotation.y = Math.sin(time) * off
       ring.rotation.x = Math.sin(Math.cos(time)) * off
     })
-    compute()
-    
-    
+    if (analyser)
+      compute()
   })
+  
+  function start () {
+    document.body.removeChild(play)
+    audio.play()
+    rings.forEach((ring, i, list) => {
+      const a = lerp(0.5, 0.7, i / (list.length - 1))
+      ring.scale.set(a, a, a)
+      app.scene.add(ring)
+    })
+  }
 
   function compute () {
     const freqs = analyser.frequencies()
