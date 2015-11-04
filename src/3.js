@@ -31,12 +31,13 @@ require('soundcloud-badge')({
   })
   app.controls.noRotate = true
   app.controls.noPan = true
+  app.controls.noZoom = true
   const analyser = createAnalyser(audio, { stereo: false })
   const analyserNode = analyser.analyser
   const sampleRate = analyser.ctx.sampleRate
   const { fftSize } = analyserNode
 
-  const geometry = new THREE.TorusGeometry(0.95, 0.1, 85, 200)
+  const geometry = new THREE.TorusGeometry(0.95, 0.15, 65, 200)
   const freqLow = newArray(geometry.vertices.length, 0.0)
   const freqMid = freqLow.slice()
   const freqHigh = freqLow.slice()

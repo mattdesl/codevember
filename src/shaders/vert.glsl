@@ -18,7 +18,7 @@ void main() {
   else if (ring == 1) freq = freqMid;
   else if (ring == 2) freq = freqHigh;
   
-  float angle = atan(position.y, position.x) * 1024.0;
+  float angle = atan(position.y, position.x) * 1024.0 + iGlobalTime;
   vec3 offset = position.xyz;
   float movement = sin(cos(iGlobalTime));
   offset.z = noise(vec4(position.xy * freq, angle, movement)) * 1.25;
