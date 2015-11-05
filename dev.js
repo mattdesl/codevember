@@ -9,9 +9,7 @@ const simpleHtml = require('simple-html-index')
 const entry = argv._[0]
 if (!entry) throw new Error('must specify an entry script')
 
-const transforms = {
-  '3': ['glslify']
-}
+const transforms = require('./config')
 
 const entryFile = path.resolve(__dirname, 'src', entry + '.js')
 budo(entryFile, {

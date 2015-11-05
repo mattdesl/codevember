@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, shrink-to-fit=0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-  <title>codevember - 3 - @mattdesl</title>
+  <title>codevember - 5 - @mattdesl</title>
   <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -12,37 +12,20 @@
   ga('create', 'UA-51878758-6', 'auto');
   ga('send', 'pageview');
   </script>
+  <link href='http://fonts.googleapis.com/css?family=Noto+Sans' rel='stylesheet' type='text/css'>
   <style>
-  body {
-    overflow: hidden;
-    background: white;
-  }
-  .center {
-    display: flex;
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    top: 0px;
-    left: 0px;
-  }
-  .play {
-    /*background: rgba(0,0,0,0.5);*/
-  }
-  .icon {
-    width: 25vw;
-  }
-  .button {
-    display: inline-block;
-    margin: auto;
-  }
+    canvas {
+      border-radius: 50%;
+      display: inline-block;
+      -webkit-border-radius: 50%;
+      -moz-border-radius: 50%;
+      -webkit-transform: translateZ(0);
+      -webkit-mask-image: -webkit-radial-gradient(circle, white 100%, black 100%);
+   }
   </style>
 </head>
 <body>
-  <div class="center play" style="display: none;">
-    <a class="button">
-      <img src="assets/play.svg" class="icon" />
-    </a>
-  </div>
-  <script src="static/3.js"></script>
+  <div>click to change displacement</div>
+  <script src="static/5.js"></script>
 </body>
 </html>

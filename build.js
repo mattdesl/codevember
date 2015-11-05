@@ -9,9 +9,7 @@ files = files.filter(function (f) {
   return /^\d+\.js$/.test(f)
 })
 
-const transformConfig = {
-  '3': ['glslify']
-}
+const transformConfig = require('./config')
 
 Promise.all(files.map(runBuild)).catch(function (err) {
   console.error(err)

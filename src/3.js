@@ -49,8 +49,8 @@ require('soundcloud-badge')({
   const freqHigh = freqLow.slice()
     
   const material = new THREE.ShaderMaterial({
-    vertexShader: glslify('./shaders/vert.glsl'),
-    fragmentShader: glslify('./shaders/frag.glsl'),
+    vertexShader: glslify('./shaders/3.vert'),
+    fragmentShader: glslify('./shaders/3.frag'),
     uniforms: {
       iGlobalTime: { type: 'f', value: 0 },
       ring: { type: 'i', value: 0 },
