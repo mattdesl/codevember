@@ -45,6 +45,7 @@ function createApp (opt) {
   app.scene = scene
   app.camera = camera
   app.controls = controls
+  app.renderer = renderer
   app.render = render
   app.resize = resize
   app.target = target
