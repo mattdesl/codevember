@@ -8,10 +8,10 @@ const createApp = require('./three-orbit-app')
 const { PI } = Math
 
 const app = createApp({
-  distance: 7,
+  distance: 9,
   position: [-2.9, 3.0, 3.5],
   near: 0.01,
-  distanceBounds: [ 0.25, 10 ],
+  distanceBounds: [ 0.25, 20 ],
   far: 100
 })
 
