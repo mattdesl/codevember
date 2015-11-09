@@ -31,6 +31,8 @@ canvas.style.height = height + 'px'
 canvas.width = (width * scale)
 canvas.height = (height * scale)
 
+window.addEventListener('touchstart', (ev) => ev.preventDefault())
+
 ctx.scale(scale, scale)
 document.body.appendChild(canvas)
 start()
@@ -58,8 +60,8 @@ function start () {
       clearInterval(timer)
       start()
     })
-    window.addEventListener('click', next, false)
-    window.addEventListener('touchstart', next)
+    canvas.addEventListener('click', next, false)
+    canvas.addEventListener('touchstart', next)
   })
 }
 
