@@ -11,7 +11,6 @@ const smoothstep = require('smoothstep')
 import { freq2index, frequencyAverages } from './audio-util'
 
 const AudioContext = window.AudioContext || window.webkitAudioContext
-const isMobile = require('./is-mobile')()
 if (!AudioContext) {
   alert('Only supported on Desktop Chrome/FF :(')
 } else {
