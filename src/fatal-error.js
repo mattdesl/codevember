@@ -14,7 +14,6 @@ var css = `
   left: 0;
   padding: 20px;
   box-sizing: border-box;
-  word-wrap: break-word;
   font-size: 16px;
   margin: 0;
   color: #000;
@@ -62,7 +61,8 @@ function createErrorPage (opt) {
         ? '16px monospace'
         : '15px "Open Sans", Helvetica, sans-serif',
       background: dark ? '#313131' : '#fff',
-      color: dark ? '#e9e9e9' : '#000'
+      color: dark ? '#e9e9e9' : '#000',
+      'word-wrap': pre ? 'break-word' : undefined
     })
 
     return element
