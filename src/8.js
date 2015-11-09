@@ -8,11 +8,16 @@ const beats = require('beats')
 const lerp = require('lerp')
 const clamp = require('clamp')
 const smoothstep = require('smoothstep')
+const error = require('./desktop-only')
+const isMobile = require('./is-mobile')()
 import { freq2index, frequencyAverages } from './audio-util'
 
 const AudioContext = window.AudioContext || window.webkitAudioContext
-if (!AudioContext) {
-  alert('Only supported on Desktop Chrome/FF :(')
+
+if (isMobile) {
+  error('not yet supported on mobile')
+} else if (!AudioContext) {
+  error('no audio context')
 } else {
   badge({
     client_id: 'b95f61a90da961736c03f659c03cb0cc',
@@ -23,7 +28,7 @@ if (!AudioContext) {
 }
 
 function ready (err, src, data, div) {
-  if (err) return alert('Only supported on Desktop Chrome/FF :(')
+  if (err) return error(err)
 
   const bgColor = '#da7c2c'
   const context = createContext('2d')

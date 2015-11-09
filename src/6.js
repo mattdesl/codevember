@@ -6,6 +6,7 @@ const unlerp = require('unlerp')
 const Reverb = require('soundbank-reverb')
 const once = require('once')
 const ease = require('eases/expo-in-out')
+const error = require('./desktop-only')
 
 const createText = require('three-bmfont-text')
 const loadFont = require('load-bmfont')
@@ -62,7 +63,7 @@ if (!AudioContext) {
         uri: 'assets/bluejean_short.mp3',
         responseType: 'arraybuffer'
       }, (err, resp, arrayBuf) => {
-        if (err) return alert(err.message)
+        if (err) return error(err)
         audioContext.decodeAudioData(arrayBuf, function(buffer) {
           sourceNode = audioContext.createBufferSource()
           sourceNode.buffer = buffer
@@ -73,7 +74,7 @@ if (!AudioContext) {
             load()
           }, 10)
         }, (err) => {
-          alert(err.message)
+          error(err)
         });
       })
     }), false)
@@ -96,8 +97,8 @@ function setupText (initialMessage) {
     color: 'rgb(230, 230, 230)'
   }))
 
-  loadFont('assets/KelsonSans.fnt', (err, font) => {
-    if (err) return alert(err.message)
+  loadFont(fontConfig.font, (err, font) => {
+    if (err) return error(err)
     textOpts = {
       font: font,
       align: 'center',
@@ -131,7 +132,7 @@ function load () {
   xhr({
     uri: 'assets/complete_hrtfs.json'
   }, (err, resp, body) => {
-    if (err) return alert(err.message)
+    if (err) return error(err)
     var result = eval(body)
   
     reloadText('zoom in to hear!')
