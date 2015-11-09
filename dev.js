@@ -23,6 +23,7 @@ budo(entryFile, {
     return fs.createReadStream(html)
   },
   browserify: {
+    debug: true,
     transform: [
       babelify.configure({ presets: ['es2015'] }),
       [ 'installify', { save: true } ]

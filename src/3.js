@@ -1,10 +1,10 @@
-const clamp = require('clamp')
 const THREE = require('three')
 const createOrbitViewer = require('three-orbit-viewer')(THREE)
 const createAnalyser = require('web-audio-analyser')
 const lerp = require('lerp')
 const glslify = require('glslify')
 const newArray = require('new-array')
+import { frequencyAverages } from './audio-util'
 
 const AudioContext = window.AudioContext || window.webkitAudioContext
 
@@ -94,6 +94,8 @@ require('soundcloud-badge')({
     fftSize = analyserNode.fftSize
   }
   
+  const getAverage = frequencyAverages(sampleRate, fftSize)
+  
   if (!isMobile || !audio) {
     start()
   } else {
@@ -144,23 +146,4 @@ require('soundcloud-badge')({
       attrib.needsUpdate = true
     })
   }
-
-  function getAverage (freqs, minHz, maxHz) {
-    let start = freq2index(minHz, sampleRate, fftSize)
-    let end = freq2index(maxHz, sampleRate, fftSize)
-    const count = end - start
-    let sum = 0
-    for (; start < end; start++) {
-      sum += freqs[start] / 255
-    }
-    return sum / count
-  }
 })
-
-function index2freq (n, sampleRate, fftSize) {
-  return n * sampleRate / fftSize
-}
-
-function freq2index (freq, sampleRate, fftSize) {
-  return clamp(Math.floor(freq / (sampleRate / fftSize)), 0, fftSize / 2)
-}

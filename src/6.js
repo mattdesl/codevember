@@ -10,6 +10,7 @@ const ease = require('eases/expo-in-out')
 const createText = require('three-bmfont-text')
 const loadFont = require('load-bmfont')
 const Shader = require('./shaders/sdf.js')
+const isMobile = require('./is-mobile')()
 
 const createOrbit = require('./three-orbit-app')
 const app = createOrbit({
@@ -44,7 +45,6 @@ if (!AudioContext) {
   alert('Needs WebGL & WebAudio support!')
 } else {
   audioContext = new AudioContext()
-  const isMobile = /(iPhone|iPad|Android)/.test(navigator.userAgent)
   setupText(isMobile ? 'tap to load' : 'loading')
   if (isMobile) { 
     window.addEventListener('touchend', once(function() {
