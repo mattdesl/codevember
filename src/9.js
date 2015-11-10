@@ -19,13 +19,15 @@ const shape = [ window.innerWidth, window.innerHeight ]
 const scale = window.devicePixelRatio
 const strokes = 4
 
-const crazy = queryString.parse(window.location.search).crazy === 'true'
+let crazy = queryString.parse(window.location.search).crazy === 'true'
+const forceCrazy = crazy
 
 let svgPaths
 let positions
 let current = 0
-const meshes = []
 let timer
+let tick = 0
+const meshes = []
 const [width, height] = shape
 const radius = Math.min(width, height) * 0.35
 
@@ -46,7 +48,8 @@ function start () {
   positions = svgPaths.map(() => randomSphere([], Math.random()))
   current = 0
   meshes.length = 0
-
+  if (!forceCrazy) crazy = tick++ % 2 === 0
+  
   load(() => {
     let running = true
     timer = setInterval(() => {
