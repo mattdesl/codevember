@@ -33,6 +33,7 @@
     "geo-chevron": "^1.0.3",
     "geo-piecering": "^1.0.2",
     "geo-star": "^1.0.1",
+    "get-canvas-context": "^1.0.1",
     "gl-fbo": "^2.0.5",
     "gl-shader": "^4.0.5",
     "gl-texture2d": "^2.0.10",
