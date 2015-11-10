@@ -9,7 +9,6 @@ const boundPoints = require('bound-points')
 const getContours = require('svg-path-contours')
 const SimplexNoise = require('simplex-noise')
 const once = require('once')
-const queryString = require('query-string')
 
 const canvas = document.createElement('canvas')
 const simplex = new SimplexNoise()
