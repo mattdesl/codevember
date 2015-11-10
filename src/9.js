@@ -9,6 +9,7 @@ const boundPoints = require('bound-points')
 const getContours = require('svg-path-contours')
 const SimplexNoise = require('simplex-noise')
 const once = require('once')
+const queryString = require('query-string')
 
 const canvas = document.createElement('canvas')
 const simplex = new SimplexNoise()
@@ -17,6 +18,8 @@ const ctx = canvas.getContext('2d')
 const shape = [ window.innerWidth, window.innerHeight ]
 const scale = window.devicePixelRatio
 const strokes = 4
+
+const crazy = queryString.parse(window.location.search).crazy === 'true'
 
 let svgPaths
 let positions
@@ -73,7 +76,7 @@ function load (cb) {
     const path = svgPaths.pop()
     const simplify = Math.random() > 0.5
     let contours = getContours(parseSvg(path), 20).map(x => {
-      return simplify ? simplifyPath(x, 1) : x
+      return (!crazy && simplify) ? simplifyPath(x, 1) : x
     })
 
     const allPos = contours.reduce(function (a, b) {
@@ -86,7 +89,7 @@ function load (cb) {
 
     const mesh = {
       contours,
-      opacity: random(0.6, 1.0),
+      opacity: random(0.8, 1.0),
       size: random(0.05, 0.2),
       outline: random(0.15, 2.5),
       rotation: random(-Math.PI * 2, Math.PI * 2)
@@ -106,7 +109,7 @@ function render () {
     const pos = positions[i]
     const mesh = meshes[i]
     if (!mesh) return
-    const { size, outline } = mesh
+    const { opacity, size, outline } = mesh
     ctx.lineCap = ctx.lineJoin = 'round'
     ctx.fillStyle = 'white'
     ctx.save()
@@ -116,9 +119,11 @@ function render () {
     ctx.globalAlpha = 1
     renderMesh(ctx, mesh, 0, true, 0)
     for (let j = 0; j < strokes; j++) {
-      ctx.globalAlpha = 1 / strokes
+      ctx.globalAlpha = 1 / strokes * opacity
       ctx.lineWidth = (1 / size * 1 / radius) * outline
-      renderMesh(ctx, mesh, 0.04, false, j, j / (strokes - 1))
+      renderMesh(ctx, mesh, crazy 
+        ? random(0.05, 0.35)
+        : 0.038, false, j, j / (strokes - 1))
     }
     ctx.restore()
   }
@@ -133,7 +138,7 @@ function renderMesh (ctx, mesh, offset, fill, time, shake) {
   contours.forEach(contour => {
     for (let i = 0; i < contour.length; i++) {
       const [x, y] = contour[i]
-      const zoom = shake * 3
+      const zoom = crazy ? random(1, 4) : (shake * 3)
       let xoff = 0
       let yoff = 0
       if (offset > 0) {

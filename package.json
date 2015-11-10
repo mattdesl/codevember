@@ -54,6 +54,7 @@
     "orbit-controls": "0.0.1",
     "parse-svg-path": "^0.1.1",
     "perspective-camera": "^2.0.1",
+    "query-string": "^3.0.0",
     "randf": "^1.0.0",
     "random-float": "^1.0.0",
     "rev-file": "^1.0.0",
