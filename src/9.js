@@ -9,10 +9,12 @@ const boundPoints = require('bound-points')
 const getContours = require('svg-path-contours')
 const SimplexNoise = require('simplex-noise')
 const once = require('once')
+const timeout = require('callback-timeout')
 
 const canvas = document.createElement('canvas')
 const simplex = new SimplexNoise()
 
+const isMobile = require('./is-mobile')()
 const ctx = canvas.getContext('2d')
 const scale = window.devicePixelRatio
 
@@ -29,7 +31,21 @@ let width, height, radius, shape
 window.addEventListener('touchstart', (ev) => ev.preventDefault())
 
 document.body.appendChild(canvas)
-start()
+
+if (isMobile) {
+  // iPhone sends a 'resize' event a little late
+  // wrap in timeout to ensure we get something
+  const waitForResize = (cb) => {
+    window.addEventListener('resize', function () {
+      cb(null)
+    }, false)
+  }
+  waitForResize(timeout(() => {
+    start()
+  }, 500))
+} else {
+  start()
+}
 
 function start () {
   shape = [ window.innerWidth, window.innerHeight ]
@@ -40,7 +56,7 @@ function start () {
   canvas.width = (width * scale)
   canvas.height = (height * scale)
 
-  ctx.resetTransform()
+  ctx.setTransform(1, 0, 0, 1, 0, 0)
   ctx.scale(scale, scale)
   ctx.clearRect(0, 0, width, height)
   svgPaths = shuffle(svgAssets.map(x => x.path))
