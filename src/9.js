@@ -118,7 +118,7 @@ function render () {
     for (let j = 0; j < strokes; j++) {
       ctx.globalAlpha = 1 / strokes
       ctx.lineWidth = (1 / size * 1 / radius) * outline
-      renderMesh(ctx, mesh, 0.035, false, j, j / (strokes - 1))
+      renderMesh(ctx, mesh, 0.04, false, j, j / (strokes - 1))
     }
     ctx.restore()
   }
@@ -137,8 +137,8 @@ function renderMesh (ctx, mesh, offset, fill, time, shake) {
       let xoff = 0
       let yoff = 0
       if (offset > 0) {
-        xoff = offset * simplex.noise3D(x * zoom, y * zoom, time)
-        yoff = offset * simplex.noise3D(x * zoom, y * zoom, time)
+        xoff = offset * simplex.noise3D(x * zoom * 0, y * zoom, time)
+        yoff = offset * simplex.noise3D(x * zoom, y * zoom * 0, time)
       }
 
       if (i === 0) ctx.moveTo(x + xoff, y + yoff)
