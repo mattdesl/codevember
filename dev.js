@@ -7,7 +7,11 @@ const fs = require('fs')
 const simpleHtml = require('simple-html-index')
 
 const entry = argv._[0]
-if (!entry) throw new Error('must specify an entry script')
+if (!entry) {
+  console.error('must specify an entry script, eg:\n'
+    + '   npm run start 5')
+  process.exit(1)
+}
 
 const transforms = require('./config')
 
@@ -30,6 +34,5 @@ budo(entryFile, {
     ].concat(transforms[entry] || [])
   }
 }).on('connect', function(ev) {
-  const uri = ev.uri + entry + '.html'
-  if (argv.open) open(uri)
+  if (argv.open) open(ev.uri)
 })

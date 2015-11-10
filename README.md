@@ -2,15 +2,38 @@
 
 [![experimental](http://badges.github.io/stability-badges/dist/experimental.svg)](http://github.com/badges/stability-badges)
 
-1 - http://mattdesl.github.io/codevember/1.html
-2 - http://mattdesl.github.io/codevember/2.html
-3 - http://mattdesl.github.io/codevember/3.html
-4 - http://glslb.in/s/dadc0eb1
-5 - http://mattdesl.github.io/codevember/5.html
+![screenshots](http://i.imgur.com/xbWC5zm.png)
 
-## Usage
+[1](http://mattdesl.github.io/codevember/1.html) - 
+[2](http://mattdesl.github.io/codevember/2.html) - 
+[3](http://mattdesl.github.io/codevember/3.html) - 
+[4](http://glslb.in/s/dadc0eb1) - 
+[5](http://mattdesl.github.io/codevember/5.html) - 
+[7](http://mattdesl.github.io/codevember/7.html) - 
+[8](http://mattdesl.github.io/codevember/8.html) - 
+[9](http://mattdesl.github.io/codevember/9.html)
 
-[![NPM](https://nodei.co/npm/codevember.png)](https://www.npmjs.com/package/codevember)
+## Running
+
+Clone this repo, then:
+
+```sh
+npm install
+
+# start day 1 demo
+npm start 1
+
+# start day 5 and launch browser
+npm start -- 1 --open
+```
+
+You can `npm run start -- 5 --open` to launch day 5 and open the browser to [http://localhost:9966/](http://localhost:9966/).
+
+To build all demos:
+
+```sh
+npm run build
+```
 
 ## License
 
