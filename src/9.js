@@ -15,9 +15,7 @@ const canvas = document.createElement('canvas')
 const simplex = new SimplexNoise()
 
 const ctx = canvas.getContext('2d')
-const shape = [ window.innerWidth, window.innerHeight ]
 const scale = window.devicePixelRatio
-
 
 let svgPaths
 let positions
@@ -27,21 +25,24 @@ let strokes = 4
 let crazy = true
 let tick = 0
 const meshes = []
-const [width, height] = shape
-const radius = Math.min(width, height) * 0.35
-
-canvas.style.width = width + 'px'
-canvas.style.height = height + 'px'
-canvas.width = (width * scale)
-canvas.height = (height * scale)
+let width, height, radius, shape
 
 window.addEventListener('touchstart', (ev) => ev.preventDefault())
 
-ctx.scale(scale, scale)
 document.body.appendChild(canvas)
 start()
 
 function start () {
+  shape = [ window.innerWidth, window.innerHeight ]
+  ;[ width, height ] = shape
+  radius = Math.min(width, height) * 0.35
+  canvas.style.width = width + 'px'
+  canvas.style.height = height + 'px'
+  canvas.width = (width * scale)
+  canvas.height = (height * scale)
+
+  ctx.resetTransform()
+  ctx.scale(scale, scale)
   ctx.clearRect(0, 0, width, height)
   svgPaths = shuffle(svgAssets.map(x => x.path))
   positions = svgPaths.map(() => randomSphere([], Math.random()))
@@ -66,8 +67,10 @@ function start () {
       clearInterval(timer)
       start()
     })
-    canvas.addEventListener('click', next, false)
+    canvas.addEventListener('click', next)
+    window.addEventListener('click', next)
     canvas.addEventListener('touchstart', next)
+    window.addEventListener('touchstart', next)
   })
 }
 
