@@ -4,11 +4,14 @@
 
 ![screenshots](http://i.imgur.com/xbWC5zm.png)
 
+Desktop recommended for all demos. Some are mobile-friendly.
+
 [1](http://mattdesl.github.io/codevember/1.html) - 
 [2](http://mattdesl.github.io/codevember/2.html) - 
 [3](http://mattdesl.github.io/codevember/3.html) - 
 [4](http://glslb.in/s/dadc0eb1) - 
 [5](http://mattdesl.github.io/codevember/5.html) - 
+[6](http://mattdesl.github.io/codevember/6.html) - 
 [7](http://mattdesl.github.io/codevember/7.html) - 
 [8](http://mattdesl.github.io/codevember/8.html) - 
 [9](http://mattdesl.github.io/codevember/9.html)
