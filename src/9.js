@@ -17,15 +17,14 @@ const simplex = new SimplexNoise()
 const ctx = canvas.getContext('2d')
 const shape = [ window.innerWidth, window.innerHeight ]
 const scale = window.devicePixelRatio
-const strokes = 4
 
-let crazy = queryString.parse(window.location.search).crazy === 'true'
-const forceCrazy = crazy
 
 let svgPaths
 let positions
 let current = 0
 let timer
+let strokes = 4
+let crazy = true
 let tick = 0
 const meshes = []
 const [width, height] = shape
@@ -48,8 +47,9 @@ function start () {
   positions = svgPaths.map(() => randomSphere([], Math.random()))
   current = 0
   meshes.length = 0
-  if (!forceCrazy) crazy = tick++ % 2 === 0
-  
+  crazy = tick++ % 2 === 0
+  strokes = crazy ? 7 : 3
+
   load(() => {
     let running = true
     timer = setInterval(() => {
@@ -94,7 +94,7 @@ function load (cb) {
       contours,
       opacity: random(0.8, 1.0),
       size: random(0.05, 0.2),
-      outline: random(0.15, 2.5),
+      outline: random(0.15, crazy ? 1.5 : 2.5),
       rotation: random(-Math.PI * 2, Math.PI * 2)
     }
     meshes.push(mesh)
