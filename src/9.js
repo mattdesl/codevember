@@ -36,9 +36,9 @@ if (isMobile) {
   // iPhone sends a 'resize' event a little late
   // wrap in timeout to ensure we get something
   const waitForResize = (cb) => {
-    window.addEventListener('resize', function () {
+    window.addEventListener('resize', once(() => {
       cb(null)
-    }, false)
+    }), false)
   }
   waitForResize(timeout(() => {
     start()
