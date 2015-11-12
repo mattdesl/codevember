@@ -53,14 +53,13 @@ const tmpArray3 = [0, 0, 0]
 const floor = createFloor()
 const poppies = createPoppies(floor)
 
-if (isMobile) {
+// if (isMobile) { // point user toward sun
   const arrowGeo = createComplex(geoChevron({
     startRadian: 0,
     width: 1,
     depth: 1,
     thickness: 0.5
   }))
-
   const arrow = new THREE.Mesh(arrowGeo, new THREE.MeshBasicMaterial({
     side: THREE.DoubleSide,
     depthTest: false,
@@ -69,10 +68,11 @@ if (isMobile) {
     blending: THREE.AdditiveBlending,
     opacity: 0.5
   }))
+  arrow.scale.multiplyScalar(0.5)
   arrow.position.y = planeY
   arrow.rotation.y = Math.PI/2
   app.scene.add(arrow)
-}
+// }
 
 document.body.style.overflow = 'hidden'
 document.body.style.margin = '0'
