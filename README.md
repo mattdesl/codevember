@@ -14,8 +14,8 @@ Desktop recommended for all demos. Some are mobile-friendly.
 [6](http://mattdesl.github.io/codevember/6.html) - 
 [7](http://mattdesl.github.io/codevember/7.html) - 
 [8](http://mattdesl.github.io/codevember/8.html) - 
-[9](http://mattdesl.github.io/codevember/9.html) -  
-[10](http://glslb.in/s/40bb7029) -  
+[9](http://mattdesl.github.io/codevember/9.html) - 
+[10](http://glslb.in/s/40bb7029) - 
 [11](http://mattdesl.github.io/codevember/11.html)
 
 ## Running
