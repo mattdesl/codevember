@@ -53,7 +53,7 @@ const tmpArray3 = [0, 0, 0]
 const floor = createFloor()
 const poppies = createPoppies(floor)
 
-// if (isMobile) { // point user toward sun
+if (isMobile) { // point user toward sun
   const arrowGeo = createComplex(geoChevron({
     startRadian: 0,
     width: 1,
@@ -72,7 +72,7 @@ const poppies = createPoppies(floor)
   arrow.position.y = planeY
   arrow.rotation.y = Math.PI/2
   app.scene.add(arrow)
-// }
+}
 
 document.body.style.overflow = 'hidden'
 document.body.style.margin = '0'
