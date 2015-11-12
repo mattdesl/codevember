@@ -2,11 +2,13 @@ var createLoop = require('canvas-loop')
 var createControls = require('orbit-controls')
 var assign = require('object-assign')
 var DeviceOrientationControls = require('./gl/DeviceOrientationControls')
+var once = require('once')
 
 module.exports = createApp
 function createApp (opt) {
   opt = assign({
-    distance: 2
+    distance: 2,
+    scale: Math.min(window.devicePixelRatio, 2)
   }, opt)
   
   var distance = typeof opt.distance === 'number' ? opt.distance : 5
@@ -18,8 +20,7 @@ function createApp (opt) {
   
   var renderer = new THREE.WebGLRenderer(assign({}, opt, {
     canvas: canvas,
-    devicePixelRatio: typeof opt.devicePixelRatio === 'number' 
-      ? opt.devicePixelRatio : window.devicePixelRatio
+    devicePixelRatio: opt.scale
   }))
   
   renderer.setClearColor(0x000000, 1)
@@ -65,7 +66,7 @@ function createApp (opt) {
   app.on('tick', render)
   app.on('resize', resize)
   resize()
-  
+
   canvas.addEventListener('touchstart', (ev) => ev.preventDefault())
   
   app.scene = scene
