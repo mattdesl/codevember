@@ -62,11 +62,7 @@ if (isMobile) { // point user toward sun
   }))
   const arrow = new THREE.Mesh(arrowGeo, new THREE.MeshBasicMaterial({
     side: THREE.DoubleSide,
-    depthTest: false,
-    wireframe: true,
-    transparent: true,
-    blending: THREE.AdditiveBlending,
-    opacity: 0.5
+    depthTest: false
   }))
   arrow.scale.multiplyScalar(0.5)
   arrow.position.y = planeY
