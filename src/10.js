@@ -8,14 +8,22 @@ const touch = require('touch-position')()
 const smoothstep = require('smoothstep')
 const randomSphere = require('gl-vec2/random')
 const clamp = require('clamp')
+const isLowEnd = require('./is-low-end')()
+const isMobile = require('./is-mobile')()
+const geoChevron = require('geo-chevron')
+const createComplex = require('three-simplicial-complex')(THREE)
 
 const app = createOrbit({
   position: [0, 0, 0.0001],
   near: 0.00001,
   far: 2000000,
   zoom: false,
-  pinch: false
+  alpha: false,
+  pinch: false,
+  deviceOrientationControls: isMobile
 })
+
+app.renderer.setClearColor(0x000000, 1)
 
 const sunSphere = new THREE.Object3D()
 const vec2 = new THREE.Vector2()
@@ -44,6 +52,31 @@ const tmpArray3 = [0, 0, 0]
 
 const floor = createFloor()
 const poppies = createPoppies(floor)
+
+if (isMobile) {
+  const arrowGeo = createComplex(geoChevron({
+    startRadian: 0,
+    width: 1,
+    depth: 1,
+    thickness: 0.5
+  }))
+
+  const arrow = new THREE.Mesh(arrowGeo, new THREE.MeshBasicMaterial({
+    side: THREE.DoubleSide,
+    depthTest: false,
+    wireframe: true,
+    transparent: true,
+    blending: THREE.AdditiveBlending,
+    opacity: 0.5
+  }))
+  arrow.position.y = planeY
+  arrow.rotation.y = Math.PI/2
+  app.scene.add(arrow)
+}
+
+document.body.style.overflow = 'hidden'
+document.body.style.margin = '0'
+document.body.style.background = 'black'
 
 let time = 6000
 app.on('tick', (dt) => {
@@ -142,7 +175,7 @@ function funkUp (geom) {
   for (var i = 0; i < verts.length; i++) {
     var v = verts[i]
     var scale = 1
-    var strength = 30
+    var strength = 5
     v.x += scale * simplex.noise3D(0, v.y * strength, v.z * strength)
     v.y += scale * simplex.noise3D(v.x * strength, 0, v.z * strength)
     v.z += scale * simplex.noise3D(v.x * strength, v.y * strength, 0)
@@ -157,7 +190,6 @@ function createPoppies (groundToCast) {
     new THREE.IcosahedronGeometry(1, 0),
     new THREE.IcosahedronGeometry(1, 0)
   ]
-
   geometries.forEach(funkUp)
 
   var materials = [
@@ -165,13 +197,12 @@ function createPoppies (groundToCast) {
       color: '#ca211d',
       blending: THREE.AdditiveBlending,
       transparent: true,
-    // wireframe: true,
     })
   ]
   const scatter = planeSize / 6
   const caster = new THREE.Raycaster()
   const tmp2 = []
-  return newArray(4000).map((_, i) => {
+  return newArray(isLowEnd ? 1000 : 4000).map((_, i) => {
     const geom = geometries[Math.floor(random(geometries.length))]
     const mat = materials[Math.floor(random(materials.length))]
     const mesh = new THREE.Mesh(geom, mat)
@@ -196,7 +227,7 @@ function createPoppies (groundToCast) {
     mesh.rotation.x = random(-Math.PI * 2, Math.PI * 2)
     mesh.rotation.y = random(-Math.PI * 2, Math.PI * 2)
     mesh.rotation.z = random(-Math.PI * 2, Math.PI * 2)
-    mesh.scale.multiplyScalar(random(0.01, 0.1))
+    mesh.scale.multiplyScalar(random(0.01, 0.07))
     app.scene.add(mesh)
 
     const body = createPoint({

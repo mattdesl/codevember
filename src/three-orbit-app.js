@@ -1,6 +1,7 @@
 var createLoop = require('canvas-loop')
 var createControls = require('orbit-controls')
 var assign = require('object-assign')
+var DeviceOrientationControls = require('./gl/DeviceOrientationControls')
 
 module.exports = createApp
 function createApp (opt) {
@@ -15,10 +16,6 @@ function createApp (opt) {
     document.body.appendChild(canvas)
   }
   
-  var controls = createControls(assign({}, opt, {
-    canvas: canvas
-  }))
-
   var renderer = new THREE.WebGLRenderer(assign({}, opt, {
     canvas: canvas,
     devicePixelRatio: typeof opt.devicePixelRatio === 'number' 
@@ -27,7 +24,24 @@ function createApp (opt) {
   
   renderer.setClearColor(0x000000, 1)
   
-  var app = createLoop(canvas, opt)
+  const iPhone = /(iPhone|iPad)/i.test(navigator.userAgent)
+  const tmp2 = [0, 0]
+  
+  // annoying bug which sometimes shows with content scrolled down on iPhone
+  if (iPhone && window.innerWidth > window.innerHeight) {
+    setTimeout(() => window.scrollTo(undefined, 0), 2000)
+  }
+  
+  var app = createLoop(canvas, assign({
+    parent: () => {
+      // brutal bug with iPhone where the top/bottom status bars
+      // will appear unless the canvas is at least + 1 px higher than window
+      var off = (window.innerWidth > window.innerHeight && iPhone) ? 1 : 0
+      tmp2[0] = window.innerWidth + off
+      tmp2[1] = window.innerHeight + off
+      return tmp2
+    }
+  }, opt))
 
   var target = new THREE.Vector3()
   var scene = new THREE.Scene()
@@ -38,9 +52,21 @@ function createApp (opt) {
   var camera = new THREE.PerspectiveCamera(fov, aspect, near, far)
   camera.position.fromArray(opt.position || [ 0, 0, -distance ])
   
+  var deviceOrientationControls = opt.deviceOrientationControls
+  var controls
+  if (deviceOrientationControls) {
+    controls = new DeviceOrientationControls(camera)
+  } else {
+    controls = createControls(assign({}, opt, {
+      canvas: canvas
+    }))
+  }
+  
   app.on('tick', render)
   app.on('resize', resize)
   resize()
+  
+  canvas.addEventListener('touchstart', (ev) => ev.preventDefault())
   
   app.scene = scene
   app.camera = camera
@@ -58,11 +84,15 @@ function createApp (opt) {
   }
   
   function updateControls () {
-    var position = camera.position.toArray()
-    var direction = target.toArray()
-    controls.update(position, direction)
-    camera.position.fromArray(position)
-    camera.lookAt(target.fromArray(direction))
+    if (deviceOrientationControls) {
+      controls.update()
+    } else {
+      var position = camera.position.toArray()
+      var direction = target.toArray()
+      controls.update(position, direction)
+      camera.position.fromArray(position)
+      camera.lookAt(target.fromArray(direction))
+    }
   }
   
   function resize () {
