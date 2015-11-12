@@ -61,6 +61,8 @@
     "randf": "^1.0.0",
     "random-float": "^1.0.0",
     "rev-file": "^1.0.0",
+    "run-parallel": "^1.1.4",
+    "scriptjs": "^2.5.8",
     "simplex-noise": "^2.2.0",
     "simplex-sampler": "^1.0.1",
     "simplify-path": "^1.1.0",

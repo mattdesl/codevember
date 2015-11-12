@@ -89,7 +89,7 @@ if (!AudioContext) {
 
 function setupText (initialMessage) {
   const texture = THREE.ImageUtils.loadTexture(fontConfig.image)
-  const textMaterial = new THREE.ShaderMaterial(Shader({
+  const textMaterial = new THREE.RawShaderMaterial(Shader({
     map: texture,
     side: THREE.DoubleSide,
     depthTest: false,

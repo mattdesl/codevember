@@ -11,6 +11,10 @@ module.exports = function(opt) {
       color: { type: 'c', value: new THREE.Color(opt.color) }
     },
     vertexShader: [
+      "attribute vec2 uv;",
+      "attribute vec3 position;",
+      "uniform mat4 projectionMatrix;",
+      "uniform mat4 modelViewMatrix;",
       "varying vec2 vUv;",
       "void main() {",
         "vUv = uv;",
