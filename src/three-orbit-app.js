@@ -2,7 +2,6 @@ var createLoop = require('canvas-loop')
 var createControls = require('orbit-controls')
 var assign = require('object-assign')
 var DeviceOrientationControls = require('./gl/DeviceOrientationControls')
-var once = require('once')
 
 module.exports = createApp
 function createApp (opt) {
@@ -10,29 +9,29 @@ function createApp (opt) {
     distance: 2,
     scale: Math.min(window.devicePixelRatio, 2)
   }, opt)
-  
+
   var distance = typeof opt.distance === 'number' ? opt.distance : 5
   var canvas = opt.canvas
   if (!canvas) {
     canvas = document.createElement('canvas')
     document.body.appendChild(canvas)
   }
-  
+
   var renderer = new THREE.WebGLRenderer(assign({}, opt, {
     canvas: canvas,
     devicePixelRatio: opt.scale
   }))
-  
+
   renderer.setClearColor(0x000000, 1)
-  
+
   const iPhone = /(iPhone|iPad)/i.test(navigator.userAgent)
   const tmp2 = [0, 0]
-  
+
   // annoying bug which sometimes shows with content scrolled down on iPhone
   if (iPhone && window.innerWidth > window.innerHeight) {
     setTimeout(() => window.scrollTo(undefined, 0), 2000)
   }
-  
+
   var app = createLoop(canvas, assign({
     parent: () => {
       // brutal bug with iPhone where the top/bottom status bars
@@ -62,13 +61,14 @@ function createApp (opt) {
       canvas: canvas
     }))
   }
-  
+
   app.on('tick', render)
   app.on('resize', resize)
   resize()
 
   canvas.addEventListener('touchstart', (ev) => ev.preventDefault())
-  
+
+  app.canvas = canvas
   app.scene = scene
   app.camera = camera
   app.controls = controls
@@ -76,14 +76,16 @@ function createApp (opt) {
   app.render = render
   app.resize = resize
   app.target = target
-    
+  app.composer = null
+
   return app.start()
-  
+
   function render () {
     updateControls()
-    renderer.render(scene, camera)
+    if (app.composer) app.composer.render()
+    else renderer.render(scene, camera)
   }
-  
+
   function updateControls () {
     if (deviceOrientationControls) {
       controls.update()
@@ -95,7 +97,7 @@ function createApp (opt) {
       camera.lookAt(target.fromArray(direction))
     }
   }
-  
+
   function resize () {
     var width = app.shape[0]
     var height = app.shape[1]
@@ -104,5 +106,3 @@ function createApp (opt) {
     camera.updateProjectionMatrix()
   }
 }
-
-  

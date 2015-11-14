@@ -38,8 +38,16 @@
     "gl-shader": "^4.0.5",
     "gl-texture2d": "^2.0.10",
     "gl-vec2": "^1.0.0",
+    "glsl-aastep": "^1.0.1",
+    "glsl-blend-overlay": "^1.0.5",
+    "glsl-blend-soft-light": "^1.0.5",
     "glsl-fast-gaussian-blur": "^1.0.2",
+    "glsl-hash-blur": "^1.0.3",
+    "glsl-hsl2rgb": "^1.1.0",
+    "glsl-inject-defines": "^1.0.3",
+    "glsl-lut": "^1.1.0",
     "glsl-noise": "0.0.0",
+    "glslify-hex": "^2.0.1",
     "google-fonts": "0.0.0",
     "img": "^1.0.0",
     "insert-css": "^0.2.0",
@@ -67,6 +75,7 @@
     "simplex-sampler": "^1.0.1",
     "simplify-path": "^1.1.0",
     "smoothstep": "^1.0.1",
+    "snowden": "^1.0.1",
     "soundbank-reverb": "^1.1.2",
     "soundcloud-badge": "mattdesl/soundcloud-badge#feature/https-url",
     "sphere-random": "^1.0.1",
@@ -77,7 +86,9 @@
     "svg-path-contours": "^2.0.0",
     "three": "^0.69.0",
     "three-bmfont-text": "^1.2.0",
+    "three-effectcomposer": "0.0.1",
     "three-orbit-viewer": "^69.3.0",
+    "three-shader-fxaa": "^3.0.0",
     "three-simplicial-complex": "^69.0.6",
     "touch-position": "^1.0.3",
     "touches": "^1.2.0",
@@ -116,6 +127,11 @@
   "scripts": {
     "start": "node dev.js",
     "build": "node build.js"
+  },
+  "glslify": {
+    "transform": [
+      "glslify-hex"
+    ]
   },
   "keywords": [],
   "repository": {
