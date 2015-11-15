@@ -5,7 +5,6 @@ module.exports = {
     tDust: { type: 't', value: null },
     tLookup: { type: 't', value: null },
     iGlobalTime: { type: 'f', value: 0 },
-    theta: { type: 'f', value: 0 },
     dustResolution: { type: 'v2', value: new THREE.Vector2() },
     resolution: { type: 'v2', value: new THREE.Vector2() }
   },

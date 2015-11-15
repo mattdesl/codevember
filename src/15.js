@@ -11,7 +11,6 @@ import randomSphere from 'gl-vec3/random'
 import parallel from 'run-parallel'
 import meshData from 'snowden/lo'
 
-const noop = function(){}
 const createComplex = require('three-simplicial-complex')(THREE)
 const error = require('./fatal-error')()
 const glslify = require('glslify')
@@ -44,7 +43,7 @@ function start3D (meshData, lookup, dust) {
     position: [0, 0, 4]
   })
 
-  app.renderer.setClearColor(0x121212, 1)
+  app.renderer.setClearColor('#181818', 1)
 
   let complex = reindex(unindex(meshData.positions, meshData.cells))
   const bbox = getBounds(complex.positions)
@@ -60,7 +59,6 @@ function start3D (meshData, lookup, dust) {
 
   const mat = new THREE.RawShaderMaterial({
     transparent: true,
-    wireframeLinewidth: app.scale,
     side: THREE.DoubleSide,
     attributes: {
       direction: { type: 'v3', value: attribs }
@@ -93,7 +91,6 @@ function start3D (meshData, lookup, dust) {
       if (effect.uniforms.resolution) effect.uniforms.resolution.value.set(app.shape[0], app.shape[1])
       if (effect.uniforms.iGlobalTime) effect.uniforms.iGlobalTime.value = time
       if (effect.uniforms.theta) effect.uniforms.theta.value = app.controls.theta
-        // console.log(app.controls.theta / 3.14)
     })
   })
 
@@ -123,7 +120,7 @@ function loadTexture (path, cb) {
   THREE.ImageUtils.loadTexture(path, undefined, (tex) => {
     tex.minFilter = tex.magFilter = THREE.LinearFilter
     cb(null, tex)
-  }, (err) => {
+  }, () => {
     cb(new Error('could not load ' + path))
   })
 }

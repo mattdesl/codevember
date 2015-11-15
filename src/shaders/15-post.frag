@@ -6,16 +6,13 @@ uniform sampler2D tDust;
 uniform vec2 resolution;
 uniform vec2 dustResolution;
 uniform float iGlobalTime;
-uniform float theta;
 uniform sampler2D tLookup;
 
 vec3 tex(vec2 uv);
 
 #pragma glslify: blur = require('glsl-hash-blur', sample=tex, iterations=20)
 #pragma glslify: lut = require('glsl-lut')
-#pragma glslify: grain = require('glsl-film-grain')
 #pragma glslify: luma = require('glsl-luma')
-#pragma glslify: blend = require('glsl-blend-soft-light')
 
 vec3 tex(vec2 uv) {
   return texture2D(tDiffuse, uv).rgb;
@@ -50,7 +47,6 @@ void main () {
   //jitter the noise but not every frame
   float tick = floor(fract(iGlobalTime)*20.0);
   float jitter = mod(tick * 382.0231, 21.321);
-  // float g = grain(vUv, resolution / 2.0, iGlobalTime);
   
   vec3 blurred = vec3(0.0);
   blurred += 0.3 * blur(vUv, 0.1, 1.0 / aspect, jitter);
@@ -67,7 +63,7 @@ void main () {
   
   
   float L = luma(blurred.rgb);
-  L = smoothstep(0.005, 0.1, L);
+  L = smoothstep(0.015, 0.1, L);
     
   vec4 dust = textureBackground(tDust, vUv, resolution, dustResolution);
   vec3 dustyColor = gl_FragColor.rgb + dust.rgb;
