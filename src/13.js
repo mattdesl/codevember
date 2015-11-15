@@ -6,11 +6,12 @@ import createAnalyser from 'web-audio-analyser'
 import newArray from 'new-array'
 import parallel from 'run-parallel'
 import loadImage from 'img'
-import error from './fatal-error'
+import createErrorPage from './fatal-error'
 import beats from 'beats'
 import { freq2index } from './audio-util'
 import SimplexNoise from 'simplex-noise'
 
+const error = createErrorPage()
 const AudioContext = window.AudioContext || window.webkitAudioContext
 
 // dumb mobile test

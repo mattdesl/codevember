@@ -1,7 +1,7 @@
 global.THREE = require('three')
 const loadJson = require('load-json-xhr')
 const createApp = require('./three-orbit-app')
-const fatal = require('./fatal-error')
+const fatal = require('./fatal-error')()
 
 const app = createApp({
   canvas: document.querySelector('canvas')

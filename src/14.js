@@ -1,9 +1,10 @@
 global.THREE = require('three')
 import createView from './three-orbit-app'
-import error from './fatal-error'
+import createErrorPage from './fatal-error'
 import isMobile from './is-mobile'
 import injectDefines from 'glsl-inject-defines'
 
+const error = createErrorPage()
 const mobile = isMobile()
 const glslify = require('glslify')
 const EffectComposer = require('three-effectcomposer')(THREE)
@@ -13,7 +14,9 @@ const PostShader = require('./shaders/14-post')
 const app = createView({
   distance: 7,
   scale: mobile ? 1 : undefined,
-  position: [0, 0, 4]
+  position: [0, 0, 4],
+  antialias: false,
+  alpha: false
 })
 
 app.renderer.setClearColor(mobile ? 0x252525 : 0x121212, 1)

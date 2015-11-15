@@ -20,6 +20,7 @@ budo(entryFile, {
   serve: 'static/' + entry + '.js',
   live: true,
   dir: __dirname,
+  // verbose: true,
   stream: process.stdout,
   defaultIndex: function (opt) {
     var html = entry + '.html'
