@@ -6,21 +6,21 @@ const open = require('opn')
 const fs = require('fs')
 const simpleHtml = require('simple-html-index')
 
-const entry = argv._[0]
+var entry = argv._[0]
 if (!entry) {
-  console.error('must specify an entry script, eg:\n'
-    + '   npm run start 5')
-  process.exit(1)
+  entry = 'grid'
 }
 
 const transforms = require('./config')
 
-const entryFile = path.resolve(__dirname, 'src', entry + '.js')
+const entryFilename = entry === 'grid'
+  ? path.join(entry, 'index.js')
+  : (entry + '.js')
+const entryFile = path.resolve(__dirname, 'src', entryFilename)
 budo(entryFile, {
   serve: 'static/' + entry + '.js',
   live: true,
   dir: __dirname,
-  // verbose: true,
   stream: process.stdout,
   defaultIndex: function (opt) {
     var html = entry + '.html'
