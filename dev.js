@@ -20,6 +20,7 @@ const entryFile = path.resolve(__dirname, 'src', entryFilename)
 budo(entryFile, {
   serve: 'static/' + entry + '.js',
   live: true,
+  verbose: true,
   dir: __dirname,
   stream: process.stdout,
   defaultIndex: function (opt) {
