@@ -10,12 +10,13 @@ varying vec3 vPos;
 
 void main() {
   float dist = length(vPos) / radius;
-  float fade = smoothstep(0.1, 1.0, dist);
+  float fade = smoothstep(0.1, 0.9, dist);
   
-  float steps = 10.0;
+  float steps = 4.0;
   float pattern = mod(dist, 1.0 / steps) * steps; //smoothstep(0.51, 0.49, );
-  pattern = aastep(0.1, abs(pattern - 0.5));
+  pattern = smoothstep(0.8, 0.0, abs(pattern - 0.5));
   
-  gl_FragColor.rgb = vec3(fade);
-  gl_FragColor.a = opacity * pattern * fade;
+  gl_FragColor.rgb = mix(vec3(#5af24f), vec3(#e72b4a), pattern);
+  gl_FragColor.a = opacity * fade;
+  gl_FragColor.rgb *= gl_FragColor.a;
 }

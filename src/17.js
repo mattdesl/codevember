@@ -22,9 +22,9 @@ const app = createApp({
 })
 app.renderer.setClearColor('#3d0e3b', 1)
 
-const radius = 0.5
-const segments = 30
-const capacity = 150
+const radius = 0.75
+const segments = 20
+const capacity = 100
 const origin = [ 0, 0, 0 ]
 
 const world = createWorld()
@@ -65,7 +65,7 @@ const material = new THREE.RawShaderMaterial({
   fragmentShader: glslify(__dirname + '/shaders/17.frag'),
   uniforms: {
     color: { type: 'c', value: new THREE.Color('#5be72b') },
-    opacity: { type: 'f', value: 0.5 },
+    opacity: { type: 'f', value: 0.95 },
     radius: { type: 'f', value: radius }
   },
   wireframe: true,
@@ -98,7 +98,7 @@ app.on('tick', dt => {
   world.integrate(points, dt)
   updatePoints()
 
-  mesh.rotation.y += dt * 0.35
+  mesh.rotation.y += dt * 0.25
 })
 
 function updatePoints () {
