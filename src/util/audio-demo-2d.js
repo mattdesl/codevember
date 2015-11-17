@@ -25,6 +25,8 @@ export default function audioDemo (track, opt, render) {
   
   let canvas = opt.canvas
   if (!canvas) {
+    document.body.style.margin = '0'
+    document.body.style.overflow = 'hidden'
     canvas = document.body.appendChild(document.createElement('canvas'))
   }
 
@@ -39,7 +41,7 @@ export default function audioDemo (track, opt, render) {
     badge({
       client_id: 'b95f61a90da961736c03f659c03cb0cc',
       song: track,
-      dark: true,
+      dark: opt.dark !== false,
       getFonts: true
     }, function (err, src, data, div) {
       if (err) return error(err)
