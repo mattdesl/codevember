@@ -28,7 +28,7 @@ demo.on('render', (context, analyser) => {
   const avg = getAnalyserAverages(analyser, 85, 180)
   context.translate(width / 2, height / 2)
   
-  const radius = Math.min(width, height) / 2
+  const radius = Math.min(200, Math.min(width, height) / 2)
   context.scale(radius, radius)
   
   const point = bezierCurve(avg, curve)
