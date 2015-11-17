@@ -18,17 +18,18 @@ const EffectComposer = require('three-effectcomposer')(THREE)
 const PostShader = require('./shaders/15-post')
 
 if (isMobile()) {
-  const element = error(`
-    <div>This demo may not perform well on mobile. Click
-    <button class="continue">here</button> to continue.
-    </div>`)
-  const cont = document.querySelector('.continue')
-    console.log(element)
+  desktopOnly()
+  // const element = error(`
+  //   <div>This demo may not perform well on mobile. Click
+  //   <button class="continue">here</button> to continue.
+  //   </div>`)
+  // const cont = document.querySelector('.continue')
+  //   console.log(element)
   
-  // cont.addEventListener('click', (ev) => {
-  //   // element.parentNode.removeChild(element)
-  //   // load()
-  // })
+  // // cont.addEventListener('click', (ev) => {
+  // //   // element.parentNode.removeChild(element)
+  // //   // load()
+  // // })
 } else {
   load()
 }
