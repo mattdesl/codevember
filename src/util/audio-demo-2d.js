@@ -1,5 +1,5 @@
 import badge from 'soundcloud-badge'
-import deskoptOnly from '../desktop-only'
+import desktopOnly from '../desktop-only'
 import isMobile from '../is-mobile'
 import createErrorPage from '../fatal-error'
 import createAnalyser from 'web-audio-analyser'
@@ -35,7 +35,6 @@ export default function audioDemo (track, opt, render) {
   
   if (isMobile() || !AudioContext) {
     desktopOnly()
-    return null
   } else {
     badge({
       client_id: 'b95f61a90da961736c03f659c03cb0cc',
