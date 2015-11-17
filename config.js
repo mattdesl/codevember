@@ -3,5 +3,6 @@ module.exports = {
   '5': ['glslify'],
   '11': ['glslify'],
   '14': ['glslify'],
-  '15': ['glslify']
+  '15': ['glslify'],
+  '17': ['glslify']
 }
