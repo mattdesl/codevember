@@ -1,3 +1,4 @@
+// our requires
 const CodeMirror = require('codemirror/lib/codemirror')
 const fs = require('fs')
 const insert = require('insert-css')
@@ -7,27 +8,21 @@ const createLoop = require('canvas-loop')
 const colorHash = new (require('color-hash'))()
 const astTypes = require('./util/acorn-types')
 
+// CodeMirror dependencies
 require('codemirror/mode/xml/xml')
 require('codemirror/mode/javascript/javascript')
 require('codemirror/mode/css/css')
 require('codemirror/mode/htmlmixed/htmlmixed')
 
-// styles
+// CSS styles
 insert(fs.readFileSync(require.resolve('codemirror/lib/codemirror.css'), 'utf8'))
 insert(fs.readFileSync(require.resolve('codemirror/theme/material.css'), 'utf8'))
 
-const helloWorld = `
-function helloWorld () {
-  return 'hello, world'
-}
-
-console.log(helloWorld())
-`.trim()
-
-// this file's source
+// this file's source code
 const src = fs.readFileSync(__filename, 'utf8')
-const textArea = document.querySelector('#text')
 
+// our CodeMirror setup
+const textArea = document.querySelector('#text')
 function createEditor (callback) {
   const editor = CodeMirror(textArea, {
     lineNumbers: true,
@@ -54,6 +49,7 @@ function createEditor (callback) {
   return editor
 }
 
+// handle on-edit with acorn AST parsing
 let previousError = null
 const editor = createEditor(text => {
   try {
@@ -79,9 +75,11 @@ const editor = createEditor(text => {
   }
 })
 
+// render each edit to a canvas
 const canvas = document.createElement('canvas')
 document.body.insertBefore(canvas, textArea)
 
+// auto-resizes and scales canvas
 let nodes = []
 const ctx = canvas.getContext('2d')
 const app = createLoop(canvas, {
@@ -99,6 +97,7 @@ function update (ast, text) {
   render()
 }
 
+// draw each node with its own styling
 function render () {
   const [ width, height ] = app.shape
   ctx.save()
