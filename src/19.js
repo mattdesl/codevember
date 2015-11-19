@@ -1,4 +1,4 @@
-// our requires
+// Include some dependencies
 const CodeMirror = require('codemirror/lib/codemirror')
 const fs = require('fs')
 const insert = require('insert-css')
@@ -8,20 +8,17 @@ const createLoop = require('canvas-loop')
 const colorHash = new (require('color-hash'))()
 const astTypes = require('./util/acorn-types')
 
-// CodeMirror dependencies
-require('codemirror/mode/xml/xml')
+// Include CodeMirror JavaScript handling
 require('codemirror/mode/javascript/javascript')
-require('codemirror/mode/css/css')
-require('codemirror/mode/htmlmixed/htmlmixed')
 
 // CSS styles
 insert(fs.readFileSync(require.resolve('codemirror/lib/codemirror.css'), 'utf8'))
 insert(fs.readFileSync(require.resolve('codemirror/theme/material.css'), 'utf8'))
 
-// this file's source code
+// The source code for this file
 const src = fs.readFileSync(__filename, 'utf8')
 
-// our CodeMirror setup
+// CodeMirror setup function
 const textArea = document.querySelector('#text')
 function createEditor (callback) {
   const editor = CodeMirror(textArea, {
@@ -49,7 +46,7 @@ function createEditor (callback) {
   return editor
 }
 
-// handle on-edit with acorn AST parsing
+// Parse the AST on text edit
 let previousError = null
 const editor = createEditor(text => {
   try {
@@ -75,11 +72,11 @@ const editor = createEditor(text => {
   }
 })
 
-// render each edit to a canvas
+// Our full-screen <canvas>
 const canvas = document.createElement('canvas')
 document.body.insertBefore(canvas, textArea)
 
-// auto-resizes and scales canvas
+// Bootstrap window resizing and canvas scaling
 let nodes = []
 const ctx = canvas.getContext('2d')
 const app = createLoop(canvas, {
@@ -87,17 +84,19 @@ const app = createLoop(canvas, {
 })
 app.on('resize', render)
 
+// Remove the last error line
 function clearPreviousError () {
   if (typeof previousError !== 'number') return
   editor.removeLineClass(previousError, 'background', 'line-error')
 }
 
+// Walk the AST to get all nodes
 function update (ast, text) {
   nodes = allNodes(ast)
   render()
 }
 
-// draw each node with its own styling
+// Render each node with its own styling
 function render () {
   const [ width, height ] = app.shape
   ctx.save()
@@ -129,12 +128,14 @@ function render () {
   ctx.restore()
 }
 
+// Walks all nodes and returns them as an array
 function allNodes (ast) {
   const nodes = []
   walkAll(ast, node => nodes.push(node))
   return nodes
 }
 
+// Walk all nodes with a visitor function
 function walkAll (ast, callback) {
   const visitors = astTypes.reduce((dict, type) => {
     dict[type] = callback
