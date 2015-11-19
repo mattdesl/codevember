@@ -1,3 +1,10 @@
+/*
+  The code for this demo visualizes itself.
+
+  Change it to see the AST update
+  the visualization.
+ */
+
 // Include some dependencies
 const CodeMirror = require('codemirror/lib/codemirror')
 const fs = require('fs')
