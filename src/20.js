@@ -8,11 +8,14 @@ const simplex = new SimplexNoise()
 const error = createErrorPage()
 const canvas = document.createElement('canvas')
 document.body.appendChild(canvas)
+document.body.style.margin = '0'
+canvas.style.position = 'absolute'
+
 const ctx = canvas.getContext('2d')
 
 loadImage('assets/paper1-diffuse.jpg', (err, img) => {
   if (err) return error(err)
-  const [ width, height ] = [ 450, 450 ]
+  const [width, height] = [ 450, 450 ]
   const scale = window.devicePixelRatio
   const pattern = ctx.createPattern(img, 'repeat')
   canvas.width = width * scale
@@ -21,9 +24,16 @@ loadImage('assets/paper1-diffuse.jpg', (err, img) => {
   canvas.style.height = height + 'px'
 
   render()
+  resize()
   window.addEventListener('touchend', render)
   window.addEventListener('click', render)
-  
+  window.addEventListener('resize', resize)
+
+  function resize () {
+    canvas.style.left = ((window.innerWidth - width) / 2) + 'px'
+    canvas.style.top = ((window.innerHeight - height) / 2) + 'px'
+  }
+
   function render () {
     ctx.save()
     ctx.scale(scale, scale)
@@ -32,6 +42,7 @@ loadImage('assets/paper1-diffuse.jpg', (err, img) => {
     ctx.fillRect(0, 0, width, height)
     ctx.fillStyle = 'black'
     draw()
+    ctx.restore()
   }
 
   function draw () {
