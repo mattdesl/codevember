@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, shrink-to-fit=0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+  <title>codevember</title>
+  <link href='https://fonts.googleapis.com/css?family=Crimson+Text:400italic|Noto+Sans' rel='stylesheet' type='text/css'>
+  <style>
+  .noselect {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+  body {
+    margin: 20px;
+    font-family: "Noto Sans", sans-serif;
+    font-size: 12px;
+  }
+  #container {
+    width: 100%;
+    text-align: center;
+  }
+  #quote {
+    padding: 0;
+    color: black;
+    max-width: 40%;
+    line-height: 0.9;
+    display: inline-block;
+    font-size: 16px;
+    text-align: center;
+    font-style: italic;
+    font-family: "Crimson Text", serif;
+    opacity: 0.6;
+    margin-bottom: 20px;
+    margin-top: 20px;
+  }
+  a, a:visited, a:active {
+    text-decoration: none;
+    color: #48a0cd;
+  }
+  a:hover {
+    text-decoration: underline;
+  }
+  </style>
+</head>
+<body>
+  <div id="container">
+    <div id="info" class="noselect">A random Sun Tzu quote encoded as stylized EBCDIC <a href="https://en.wikipedia.org/wiki/Punched_card">punched cards</a>.</div>
+    <div id="quote" class="noselect"></div>
+  </div>
+  <canvas></canvas>
+  <script src="static/22.js"></script>
+</body>
+</html>
