@@ -5,7 +5,7 @@ module.exports = function(opt) {
   var opacity = typeof opt.opacity === 'number' ? opt.opacity : 1
   var alphaTest = typeof opt.alphaTest === 'number' ? opt.alphaTest : 0.06
   return assign({
-     uniforms: {
+    uniforms: {
       opacity: { type: 'f', value: opacity },
       map: { type: 't', value: opt.map || new THREE.Texture() },
       color: { type: 'c', value: new THREE.Color(opt.color) }
