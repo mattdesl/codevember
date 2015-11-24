@@ -6,6 +6,8 @@ const fatal = require('./fatal-error')()
 const parallel = require('run-parallel')
 const once = require('once')
 const glslify = require('glslify')
+const marvel = require('marvel-characters/characters.json')
+const shuffle = require('array-shuffle')
 
 parallel([
   (next) => loadBMFont('assets/KelsonSans.fnt', next),
@@ -15,44 +17,47 @@ parallel([
       (tex) => next(null, tex),
       (err) => next(err))
   }
-], (err, [ font, texture ]) => {
+], (err, [font, texture]) => {
   if (err) return fatal(err)
   texture.minFilter = THREE.LinearFilter
   texture.magFilter = THREE.LinearFilter
   start(font, texture)
 })
 
-function start(font, texture) {
+function start (font, texture) {
   const app = createOrbit({
-    position: [-0.25, 0.5, 1],
+    position: [0, 0, 1],
     near: 0.01,
-    distance: 12,
+    distance: 40,
     far: 1000
   })
-  
+
   app.renderer.setClearColor(0xffffff, 1)
-  
+
   // app.camera = new THREE.OrthographicCamera()
   // app.camera.left = 0
   // app.camera.top = 0
   // app.camera.near = -100
   // app.camera.far = 100
 
-  var geom = createText({
-    text: 'lorem ipsum',
+  const textOpts = {
+    text: '',
+    width: 500,
+    letterSpacing: -5,
+    lineHeight: 20,
     font: font,
     align: 'center',
-    // width: 700,
     flipY: texture.flipY
-  })
+  }
+  const geom = createText(textOpts)
 
-  var material = new THREE.RawShaderMaterial({
+  const material = new THREE.RawShaderMaterial({
     uniforms: {
       opacity: { type: 'f', value: 1 },
       color: { type: 'c', value: new THREE.Color('#000') },
       map: { type: 't', value: texture },
       iGlobalTime: { type: 'f', value: 0 },
-      iResolution: { type: 'v2', value: new THREE.Vector2() }
+      textSize: { type: 'v2', value: new THREE.Vector2() },
     },
     vertexShader: glslify(__dirname + '/shaders/23.vert'),
     fragmentShader: glslify(__dirname + '/shaders/23.frag'),
@@ -63,33 +68,29 @@ function start(font, texture) {
     color: 'rgb(230, 230, 230)'
   })
 
-  var layout = geom.layout
   var text = new THREE.Mesh(geom, material)
-  // var padding = 20
-  text.position.set(-layout.width / 2, 0, 0)
-  
+
   var textAnchor = new THREE.Object3D()
   textAnchor.add(text)
   app.scene.add(textAnchor)
-  
+
   const scalar = -0.1
   textAnchor.scale.set(-scalar, scalar, scalar)
-  // textAnchor.lookAt(app.camera.position)
-  // textAnchor.scale.multiplyScalar(5)
-  // textAnchor.scale.multiplyScalar(1/(window.devicePixelRatio||1))
-  
+
   let time = 0
-  //update orthographic
-  app.on('tick', function(dt) {
+  app.on('tick', function (dt) {
     time += dt / 1000
-    
     material.uniforms.iGlobalTime.value = time
-    
-    //update camera
-    // var width = app.engine.width
-    // var height = app.engine.height
-    // app.camera.right = width
-    // app.camera.bottom = height
-    // app.camera.updateProjectionMatrix()
   })
+
+  updateText(shuffle(marvel).slice(0, 100).join(', '))
+
+  function updateText (copy) {
+    textOpts.text = copy.toLowerCase()
+    geom.update(textOpts)
+    const layout = geom.layout
+    text.position.set(-layout.width / 2, layout.height / 2, 0)
+    console.log(layout.width, layout.height)
+    material.uniforms.textSize.value.set(layout.width, layout.height)
+  }
 }

@@ -1,5 +1,5 @@
 #extension GL_OES_standard_derivatives : enable
-precision mediump float;
+precision highp float;
 #define SQRT2_2 0.70710678118654757
 
 uniform float opacity;
@@ -7,7 +7,10 @@ uniform vec3 color;
 uniform sampler2D map;
 uniform vec2 iResolution;
 uniform float iGlobalTime;
+uniform vec2 textSize;
 varying vec2 vUv;
+varying vec3 vPos;
+varying vec2 vCenterUV;
 
 #pragma glslify: noise = require('glsl-noise/simplex/3d')
 #pragma glslify: noise2d = require('glsl-noise/simplex/2d')
@@ -25,33 +28,26 @@ void main() {
   vec4 texColor = texture2D(map, vUv);
   float sdf = texColor.a;
   
-  float sdfDst = sdf;
-  // float stroke = noise(vec3(sdf * 10.0, 0.0, iGlobalTime));
-  // stroke = clamp(stroke, 0.0, 0.2);
-  // float alpha = aastep(0.2, 1.0 * stroke);
-  // vec3 rendered = render(sdf);
+  vec2 pos = vec2(vPos.xy / textSize);
+  pos.y *= -1.0;
+  pos -= 0.5;
+  pos.x *= abs(textSize.x / textSize.y);
   
-  float size = 0.05;
-  vec2 pos = mod(vUv.xy, vec2(size)) - vec2(size / 2.0);
-  float center = length(pos - 0.5);
-  gl_FragColor = vec4(vec3(center), 1.0);
+  float timeOff = iGlobalTime * 0.2;
+  float alpha = 0.0;
+  alpha += aastep(0.5, sdf + 0.25 * noise(vec3(vUv * 1150.0, timeOff)));
+  alpha -= aastep(0.5, sdf + 0.25 * noise(vec3(vUv * 50.0, timeOff)));
+  alpha += aastep(0.6, sdf + 0.0 * noise(vec3(vUv * 500.0, timeOff)));
   
-  // sdf += noise(vec3(center, 0.0, 0.0));
-  // float alpha = aastep(0.5, sdf);
-  // gl_FragColor = vec4(color, opacity * alpha);
+  float mask = length(pos);
+  mask = aastep(0.5, mask);
+  // float size = 1.0;
+  // vec2 tPos = mod(pos.xy, vec2(size)) - vec2(size / 2.0);
+  // float pattern = aastep(0.25, length(tPos) / size);
+  alpha -= 0.75 * mask;
   
-  // float alpha = 0.0;
-  // alpha += aastep(0.5, sdf + 0.25 * noise(vec3(vUv * 10.0, iGlobalTime)));
-  // alpha -= aastep(0.5, sdf + 0.05 * noise(vec3(vUv * 500.0, iGlobalTime)));
-  // vec3 colorA = vec3(#484848);
-  // vec3 colorB = vec3(#45c4ee);
-  // vec4 baseA = vec4(colorA, opacity * alpha);
-  
-  // alpha = 0.0;
-  // float dst = 0.0;
-  // dst += 0.5 * (sdf + 0.15 * noise(vec3(vUv * 10.0, iGlobalTime)));
-  // dst += 0.5 * (sdf + 0.05 * noise(vec3(vUv * 400.0, iGlobalTime)));
-  // alpha = aastep(0.5, dst);
-  // vec4 baseB = vec4(colorB, opacity * alpha);
-  // gl_FragColor = blend(baseA, baseB);
+  vec3 colorA = vec3(#000);
+  vec3 colorB = vec3(#ff0000);
+  vec4 baseA = vec4(colorA, opacity * alpha);
+  gl_FragColor = baseA;
 }
