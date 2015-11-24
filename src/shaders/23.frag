@@ -41,9 +41,6 @@ void main() {
   
   float mask = length(pos);
   mask = aastep(0.5, mask);
-  // float size = 1.0;
-  // vec2 tPos = mod(pos.xy, vec2(size)) - vec2(size / 2.0);
-  // float pattern = aastep(0.25, length(tPos) / size);
   alpha -= 0.75 * mask;
   
   vec3 colorA = vec3(#000);

@@ -28,17 +28,10 @@ function start (font, texture) {
   const app = createOrbit({
     position: [0, 0, 1],
     near: 0.01,
-    distance: 40,
+    distance: 60,
     far: 1000
   })
-
   app.renderer.setClearColor(0xffffff, 1)
-
-  // app.camera = new THREE.OrthographicCamera()
-  // app.camera.left = 0
-  // app.camera.top = 0
-  // app.camera.near = -100
-  // app.camera.far = 100
 
   const textOpts = {
     text: '',
