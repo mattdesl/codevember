@@ -7,5 +7,6 @@ module.exports = {
   '17': ['glslify'],
   '19': ['brfs'],
   '21': ['glslify'],
-  '23': ['brfs', 'glslify']
+  '23': ['brfs', 'glslify'],
+  '26': ['glslify']
 }

@@ -28,6 +28,8 @@ function start (font, texture) {
   const app = createOrbit({
     position: [0, 0, 1],
     near: 0.01,
+    antialias: false,
+    scale: Math.min(2, window.devicePixelRatio),
     distance: 60,
     far: 1000
   })
@@ -56,7 +58,8 @@ function start (font, texture) {
     fragmentShader: glslify(__dirname + '/shaders/23.frag'),
     map: texture,
     transparent: true,
-    side: THREE.DoubleSide,
+    side: THREE.FrontSide,
+    depthWrite: false,
     depthTest: false,
     color: 'rgb(230, 230, 230)'
   })

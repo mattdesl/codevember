@@ -51,14 +51,15 @@ function createApp (opt) {
   var far = typeof opt.far === 'number' ? opt.far : 1000
   var camera = new THREE.PerspectiveCamera(fov, aspect, near, far)
   camera.position.fromArray(opt.position || [ 0, 0, -distance ])
-  
+
   var deviceOrientationControls = opt.deviceOrientationControls
   var controls
   if (deviceOrientationControls) {
     controls = new DeviceOrientationControls(camera)
   } else {
     controls = createControls(assign({}, opt, {
-      canvas: canvas
+      canvas: canvas,
+      parent: window
     }))
   }
 
