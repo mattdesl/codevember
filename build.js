@@ -12,7 +12,11 @@ files = files.filter(function (f) {
 
 const transformConfig = require('./config')
 
-var entry = String(argv._[0])
+var entry = argv._[0]
+if (typeof entry === 'number') {
+  entry = String(entry)
+}
+
 if (entry) {
   files = files.filter(function (f) {
     return path.basename(f, '.js') === entry
