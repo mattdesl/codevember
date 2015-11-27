@@ -1,6 +1,6 @@
-global.THREE = require('three')
-global._typeface_js = { faces: THREE.FontUtils.faces, loadFace: THREE.FontUtils.loadFace }
-THREE.typeface_js = global._typeface_js
+window.THREE = require('three')
+window._typeface_js = { faces: THREE.FontUtils.faces, loadFace: THREE.FontUtils.loadFace }
+THREE.typeface_js = window._typeface_js
 
 const googleEquirect = require('google-panorama-equirectangular')
 const googlePano = require('google-panorama-by-location')

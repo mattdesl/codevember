@@ -1,4 +1,5 @@
 global.Promise = require('pinkie-promise')
+const argv = require('minimist')(process.argv.slice(2))
 const browserify = require('browserify')
 const fs = require('fs')
 const path = require('path')
@@ -10,6 +11,13 @@ files = files.filter(function (f) {
 })
 
 const transformConfig = require('./config')
+
+var entry = String(argv._[0])
+if (entry) {
+  files = files.filter(function (f) {
+    return path.basename(f, '.js') === entry
+  })
+}
 
 Promise.all(files.map(runBuild)).catch(function (err) {
   console.error(err)
