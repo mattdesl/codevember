@@ -1,4 +1,3 @@
-
 global.THREE = require('three')
 
 const bezier = require('adaptive-bezier-curve')
@@ -20,7 +19,7 @@ app.renderer.setClearColor('#dd6524', 1)
 
 const cells = triangulate(sphere.positions)
 const path = cells.map(cell => {
-  const [ a, b, c ] = cell
+  const [a, b, c] = cell
   return [
     sphere.positions[a],
     sphere.positions[b],
@@ -28,11 +27,11 @@ const path = cells.map(cell => {
   ]
 }).reduce((a, b) => a.concat(b), [])
 
-//create our geometry
+// create our geometry
 const outerGeo = Line(sphere.positions)
 const innerGeo = Line(path)
 
-//create a material using a basic shader
+// create a material using a basic shader
 var material = createMaterial()
 material.uniforms.thickness.value = 0.2
 
@@ -52,12 +51,11 @@ let time = 0
 app.on('tick', dt => {
   dt /= 1000
   time += dt
-  
-  const [ width, height ] = app.shape
+
   inner.rotation.y -= Math.sin(time * 0.001) * 0.001
   outer.rotation.y += dt * 0.1
   outer.rotation.x += dt * 0.05
-  
+
   material.uniforms.iGlobalTime.value = time
   material2.uniforms.iGlobalTime.value = time
 })

@@ -9,5 +9,6 @@ module.exports = {
   '21': ['glslify'],
   '23': ['brfs', 'glslify'],
   '26': ['glslify'],
-  '27': ['glslify']
+  '27': ['glslify'],
+  '28': ['glslify']
 }
