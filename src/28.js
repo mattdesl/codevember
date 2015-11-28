@@ -3,6 +3,7 @@ global.THREE = require('three')
 const createBackground = require('./gl/three-vignette-background')
 const googlePano = require('google-panorama-by-location')
 const googleEquirect = require('google-panorama-equirectangular')
+const qs = require('query-string')
 const error = require('./fatal-error')()
 const glslify = require('glslify')
 
@@ -28,8 +29,9 @@ app.on('tick', (dt) => {
   })
 })
 
+const smooth = qs.parse(window.location.search).smooth === 'true'
 const geometry = new THREE.TorusKnotGeometry(0.45, 0.25, 128, 256)
-const material = createMaterial(true)
+const material = createMaterial(!smooth)
 
 const mesh = new THREE.Mesh(geometry, material)
 app.scene.add(mesh)
