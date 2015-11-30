@@ -1,0 +1,51 @@
+[Header]
+; some general information for preview purpose
+; Icons must be 128 by 128 pixels
+ICOfile = "Camels_Icon.jpg"
+Name = "Apartment"
+Author = "Blochi"
+Location = "Hollywood"
+Comment = "Inside Scene, works best for objects on table."
+GEOlat = 34.102992275554215
+GEOlong = -118.34119141101837
+Link = "http://www.hdrlabs.com/sibl/archive.html"
+Date = "2003:03:02"
+Time = "10:56:00"
+Height = 0.2
+North = 0.5
+
+[Background]
+; The Bgfile.. normally a hires LDRimage
+BGfile = "Apartment_Spherical_HiRes.jpg"
+BGmap = 1
+BGu = 0
+BGv = 0
+BGheight = 1024
+
+[Enviroment]
+; The Enviromentfile LowRes HDRI with Diffuse Blur
+EVfile = "Apartment_Diffuse.hdr"
+EVmap = 1
+EVu = 0
+EVv = 0
+EVheight = 128
+EVmulti = 1
+EVgamma = 1
+
+[Reflection]
+; The ReflectionMap is a crisp MedRes HDRI
+REFfile = "Apartment_Reflection.hdr"
+REFmap = 1
+REFu = 0
+REFv = 0
+REFheight = 256
+REFmulti = 1
+REFgamma = 1
+
+[Sun]
+; Additional keylight ..ha!
+SUNcolor = 240,250,255
+SUNmulti = 1.1
+SUNu = 0.625
+SUNv = 0.3906
+

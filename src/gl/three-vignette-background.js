@@ -85,7 +85,7 @@ function createBackground (opt) {
         return c
       })
       material.uniforms.color1.value.copy(colors[0])
-      material.uniforms.color1.value.copy(colors[1])
+      material.uniforms.color2.value.copy(colors[1])
     }
     if (typeof opt.aspect === 'number') {
       material.uniforms.aspect.value = opt.aspect
