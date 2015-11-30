@@ -11,9 +11,8 @@ uniform mat4 viewMatrix;
 uniform float iGlobalTime;
 varying vec2 vUv;
 varying mat4 vInverseViewMatrix;
-varying mat4 vInverseProjMatrix;
 
-#pragma glslify: inverse = require('glsl-inverse')
+#pragma glslify: inverseMat = require('glsl-inverse')
 #pragma glslify: noise = require('glsl-noise/simplex/4d')
 #pragma glslify: ease = require('glsl-easings/quartic-in-out')
 
@@ -33,8 +32,7 @@ void main() {
   ecPosition = vec3(viewMatrix * modelMatrix * posW);
   ecNormal = normalMatrix * normal;
     
-  vInverseViewMatrix = inverse(viewMatrix);
-  vInverseProjMatrix = inverse(projectionMatrix);
+  vInverseViewMatrix = inverseMat(viewMatrix);
   vUv = uv;
   gl_Position = projectionMatrix *
               modelViewMatrix *

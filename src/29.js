@@ -2,17 +2,21 @@ global.THREE = require('three')
 
 const createBackground = require('./gl/three-vignette-background')
 const unindex = require('./gl/unindex-geometry')
-const loadJson = require('load-json-xhr')
 const error = require('./fatal-error')()
 const glslify = require('glslify')
 const threeHdrTexture = require('./gl/three-hdr-texture')
 const randomSphere = require('gl-vec3/random')
 const runParallel = require('run-parallel')
+const isMobile = require('./is-mobile')()
 
 const app = require('./three-orbit-app')({
   distance: 5,
   distanceBounds: [ 3, 100 ]
 })
+const ext = app.renderer.getContext().getExtension('OES_standard_derivatives')
+if (!ext) {
+  error(`This device does not support OES_standard_derivatives`)
+}
 
 let material
 const bg = createBackground()
@@ -23,19 +27,14 @@ updateBackground()
 runParallel([
   (next) => threeHdrTexture('assets/apartment/Apartment_Reflection.hdr', next),
   (next) => threeHdrTexture('assets/apartment/Apartment_Diffuse.hdr', next),
-  (next) => {
-    const src = 'assets/burlap-normals.jpg'
-    THREE.ImageUtils.loadTexture(src, undefined, tex => {
-      next(null, tex)
-    }, () => {
-      next(new Error(`could not load asset ${src}`))
-    })
-  }
+  (next) => loadTexture('assets/burlap-normals.jpg', next)
 ], (err, textures) => {
   if (err) return error(err)
 
-  let geometry = new THREE.SphereGeometry(1, 128, 64)
+  const segs = isMobile ? 50 : 128
+  let geometry = new THREE.SphereGeometry(1, segs, segs / 2)
   geometry = unindex(geometry)
+
   const randomDirections = geometry.faces.map(face => {
     const tmp = randomSphere([], 1)
     const center = new THREE.Vector3().fromArray(tmp)
@@ -100,10 +99,10 @@ function createMaterial (attrib) {
   })
 }
 
-function loadGeometry (path, cb) {
-  const loader = new THREE.JSONLoader()
-  loadJson(path, (err, data) => {
-    if (err) return cb(err)
-    else cb(null, loader.parse(data))
+function loadTexture (src, next) {
+  THREE.ImageUtils.loadTexture(src, undefined, tex => {
+    next(null, tex)
+  }, () => {
+    next(new Error(`could not load asset ${src}`))
   })
 }
