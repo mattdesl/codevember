@@ -1,6 +1,6 @@
 global.THREE = require('three')
 const createOrbit = require('./three-orbit-app')
-
+const touches = require('touches')
 const classes = require('dom-classes')
 const audioPlayer = require('web-audio-player')
 const createReverb = require('soundbank-reverb')
@@ -8,6 +8,11 @@ const createBackground = require('./gl/three-vignette-background')
 const tweenr = require('tweenr')()
 const average = require('analyser-frequency-average')
 const audioAnalyser = require('web-audio-analyser')
+const isMobile = require('./is-mobile')()
+const detectAutoplay = require('detect-audio-autoplay')
+const detectMediaSource = require('detect-media-element-source')
+const createAudioContext = require('ios-safe-audio-context')
+const once = require('once')
 
 import {
   mainColor, altColor,
@@ -79,15 +84,43 @@ app.on('tick', dt => {
   })
 })
 
-setupAudio()
-window.flipSwitch = flipSwitch
-// flipSwitch()
+detectAutoplay(function (autoplay) {
+  if (autoplay) {
+    canplay()
+  } else {
+    infoElement.innerText = 'tap to load audio'
+    window.addEventListener('touchend', once(function (ev) {
+      ev.preventDefault()
+      infoElement.innerText = 'Loading...'
+      canplay()
+    }))
+  }
+})
 
-function setupAudio () {
-  const audio = audioPlayer('assets/soul.mp3', {
+function canplay () {
+  var audioContext = createAudioContext()
+  detectMediaSource(function (supportsMediaElement) {
+    var shouldBuffer = !supportsMediaElement
+    playAudio(audioContext, shouldBuffer)
+  }, audioContext)
+}
+
+function playAudio (context, buffer) {
+  console.log('Audio source:', buffer ? 'Buffer' : 'Media')
+  const src = buffer ? 'assets/soul_short.mp3' : 'assets/soul.mp3'
+  const audio = audioPlayer(src, {
     loop: true,
+    context: context,
+    buffer: buffer
   })
-  const context = audio.context
+
+  audio.on('decoding', () => infoElement.innerText = 'Decoding...')
+  audio.on('load', () => {
+    if (isMobile) infoElement.innerText = 'turn up volume and tap + drag'
+    else infoElement.innerText = 'turn on sound and press space'
+    audio.play()
+  })
+
   const analyser = audioAnalyser(audio.node, context, {
     stereo: false,
     audible: false
@@ -102,7 +135,6 @@ function setupAudio () {
   reverb.dry.value = reverbTween.dry
   reverb.filterType = 'lowpass'
   reverb.cutoff.value = 6000
-  audio.play()
 
   app.on('tick', () => {
     reverb.wet.value = reverbTween.wet
@@ -130,7 +162,7 @@ function flipSwitch () {
   const color = isDark ? 0 : 1
   const duration = 0.3
   isDark = !isDark
-  
+
   classes.remove(infoElement, 'alt')
   if (isDark) classes.add(infoElement, 'alt')
 
@@ -141,23 +173,29 @@ function flipSwitch () {
   meshes.forEach((mesh, i) => {
     tweenr.to(mesh.colorTween, {
       duration: duration, value: color,
-      ease: 'expoOut'
+      ease: 'expoOut', delay: 0
     })
   })
 }
 
-window.addEventListener('keydown', (ev) => {
-  if (ev.keyCode === 32) {
-    ev.preventDefault()
-    if (!isKeyDown) flipSwitch()
-    isKeyDown = true
-  }
-})
+if (isMobile) {
+  touches(app.canvas, { filtered: true, parent: window })
+    .on('start', () => flipSwitch())
+    .on('end', () => flipSwitch())
+} else {
+  window.addEventListener('keydown', ev => {
+    if (ev.keyCode === 32) {
+      ev.preventDefault()
+      if (!isKeyDown) flipSwitch()
+      isKeyDown = true
+    }
+  })
 
-window.addEventListener('keyup', (ev) => {
-  if (ev.keyCode === 32) {
-    ev.preventDefault()
-    if (isKeyDown) flipSwitch()
-    isKeyDown = false
-  }
-})
+  window.addEventListener('keyup', ev => {
+    if (ev.keyCode === 32) {
+      ev.preventDefault()
+      if (isKeyDown) flipSwitch()
+      isKeyDown = false
+    }
+  })
+}
