@@ -13,6 +13,7 @@ const detectAutoplay = require('detect-audio-autoplay')
 const detectMediaSource = require('detect-media-element-source')
 const createAudioContext = require('ios-safe-audio-context')
 const once = require('once')
+const distance = require('gl-vec2/distance')
 
 import {
   mainColor, altColor,
@@ -93,22 +94,20 @@ detectAutoplay(function (autoplay) {
     // can't use let/const here as it will break parser?!
     var touch
     var lastTime = Date.now()
-    var dragged = false
+    var startPos = [0,0]
     var done = once(canplay)
     infoElement.innerText = 'tap to load audio'
 
     // iOS won't play audio if it's after a drag event ?
     touch = touches(window, { filtered: true })
-      .on('start', () => {
-        dragged = false
+      .on('start', (ev, pos) => {
+        startPos = pos.slice()
         lastTime = Date.now()
       })
-      .on('move', () => {
-        dragged = true
-      })
-      .on('end', ev => {
-        var ms = Date.now() - lastTime
-        if (ms < 100 && !dragged) {
+      .on('end', (ev, pos) => {
+        const ms = Date.now() - lastTime
+        const dragDist = distance(pos, startPos)
+        if (ms < 100 && dragDist < 10) {
           touch.disable()
           ev.preventDefault()
           infoElement.innerText = 'loading...'

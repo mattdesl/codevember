@@ -103,6 +103,7 @@
     "load-bmfont": "^1.2.3",
     "load-json-xhr": "^3.0.3",
     "load-svg": "^1.0.0",
+    "magnitude": "^1.0.0",
     "marvel-characters": "^1.0.3",
     "merge-vertices": "^1.0.1",
     "mesh-reindex": "^1.0.0",
