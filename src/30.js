@@ -12,8 +12,7 @@ const isMobile = require('./is-mobile')()
 const detectAutoplay = require('detect-audio-autoplay')
 const detectMediaSource = require('detect-media-element-source')
 const createAudioContext = require('ios-safe-audio-context')
-const once = require('once')
-const distance = require('gl-vec2/distance')
+const tapEvent = require('tap-event')
 
 import {
   mainColor, altColor,
@@ -92,28 +91,16 @@ detectAutoplay(function (autoplay) {
     canplay()
   } else {
     // can't use let/const here as it will break parser?!
-    var touch
-    var lastTime = Date.now()
-    var startPos = [0,0]
-    var done = once(canplay)
     infoElement.innerText = 'tap to load audio'
-
-    // iOS won't play audio if it's after a drag event ?
-    touch = touches(window, { filtered: true })
-      .on('start', (ev, pos) => {
-        startPos = pos.slice()
-        lastTime = Date.now()
-      })
-      .on('end', (ev, pos) => {
-        const ms = Date.now() - lastTime
-        const dragDist = distance(pos, startPos)
-        if (ms < 100 && dragDist < 10) {
-          touch.disable()
-          ev.preventDefault()
-          infoElement.innerText = 'loading...'
-          done()
-        }
-      })
+    
+    // use tap-event to ensure audio plays on iOS !!
+    var done = tapEvent((ev) => {
+      window.removeEventListener('touchstart', done, false)
+      ev.preventDefault()
+      infoElement.innerText = 'loading...'
+      canplay()
+    })
+    window.addEventListener('touchstart', done, false)
   }
 })
 

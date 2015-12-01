@@ -147,6 +147,7 @@
     "svg-camera-icon": "^1.0.0",
     "svg-mesh-3d": "^1.0.1",
     "svg-path-contours": "^2.0.0",
+    "tap-event": "^1.0.0",
     "three": "^0.69.0",
     "three-bmfont-text": "^1.2.0",
     "three-effectcomposer": "0.0.1",
