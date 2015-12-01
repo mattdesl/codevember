@@ -27,6 +27,7 @@ const app = createOrbit({
   near: 0.0001,
   far: 10000,
   antialias: true,
+  scale: Math.min(2, window.devicePixelRatio),
   position: [2, 3, -4],
   zoomSpeed: 0,
   pinch: false
@@ -53,7 +54,6 @@ app.scene.add(planet)
 const meshes = []
 app.scene.traverse(mesh => {
   if (mesh.material &&
-      mesh.material instanceof THREE.MeshBasicMaterial &&
       mesh.material.color) {
     const col = mesh.material.color
     if (col.equals(mainColor)) {

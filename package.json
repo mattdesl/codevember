@@ -25,6 +25,7 @@
     "array-shuffle": "^1.0.0",
     "arraybuffer-to-buffer": "0.0.1",
     "awesome-streetview": "^1.4.2",
+    "babel-polyfill": "^6.2.0",
     "baboon-image-uri": "^1.0.1",
     "beats": "0.0.0",
     "bezier-curve": "^1.0.0",
