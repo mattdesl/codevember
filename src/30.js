@@ -87,6 +87,7 @@ app.on('tick', dt => {
 
 detectAutoplay(function (autoplay) {
   if (autoplay) {
+    infoElement.innerText = 'loading...'
     canplay()
   } else {
     // can't use let/const here as it will break parser?!
@@ -110,7 +111,7 @@ detectAutoplay(function (autoplay) {
         if (ms < 100 && !dragged) {
           touch.disable()
           ev.preventDefault()
-          infoElement.innerText = 'Loading...'
+          infoElement.innerText = 'loading...'
           done()
         }
       })
@@ -134,7 +135,7 @@ function playAudio (context, buffer) {
     buffer: buffer
   })
 
-  audio.on('decoding', () => infoElement.innerText = 'Decoding...')
+  audio.on('decoding', () => infoElement.innerText = 'decoding...')
   audio.on('load', () => {
     if (isMobile) infoElement.innerText = 'turn up volume and tap + drag'
     else infoElement.innerText = 'turn on sound and press space'
