@@ -36,6 +36,7 @@ const app = createOrbit({
 process.nextTick(() => app.renderer.getContext().lineWidth(1.5))
 
 let isDark = false
+let isLoaded = false
 let isKeyDown = false
 const infoElement = document.querySelector('.info')
 const reverbTween = { wet: 0, dry: 1 }
@@ -88,12 +89,31 @@ detectAutoplay(function (autoplay) {
   if (autoplay) {
     canplay()
   } else {
+    // can't use let/const here as it will break parser?!
+    var touch
+    var lastTime = Date.now()
+    var dragged = false
+    var done = once(canplay)
     infoElement.innerText = 'tap to load audio'
-    window.addEventListener('touchend', once(function (ev) {
-      ev.preventDefault()
-      infoElement.innerText = 'Loading...'
-      canplay()
-    }))
+
+    // iOS won't play audio if it's after a drag event ?
+    touch = touches(window, { filtered: true })
+      .on('start', () => {
+        dragged = false
+        lastTime = Date.now()
+      })
+      .on('move', () => {
+        dragged = true
+      })
+      .on('end', ev => {
+        var ms = Date.now() - lastTime
+        if (ms < 100 && !dragged) {
+          touch.disable()
+          ev.preventDefault()
+          infoElement.innerText = 'Loading...'
+          done()
+        }
+      })
   }
 })
 
@@ -119,6 +139,8 @@ function playAudio (context, buffer) {
     if (isMobile) infoElement.innerText = 'turn up volume and tap + drag'
     else infoElement.innerText = 'turn on sound and press space'
     audio.play()
+    isLoaded = true
+    setupSwitch()
   })
 
   const analyser = audioAnalyser(audio.node, context, {
@@ -157,6 +179,7 @@ function playAudio (context, buffer) {
 }
 
 function flipSwitch () {
+  if (!isLoaded) return
   const wet = isDark ? 0 : 1
   const dry = isDark ? 1 : 0
   const color = isDark ? 0 : 1
@@ -178,24 +201,34 @@ function flipSwitch () {
   })
 }
 
-if (isMobile) {
-  touches(app.canvas, { filtered: true, parent: window })
-    .on('start', () => flipSwitch())
-    .on('end', () => flipSwitch())
-} else {
-  window.addEventListener('keydown', ev => {
-    if (ev.keyCode === 32) {
-      ev.preventDefault()
-      if (!isKeyDown) flipSwitch()
-      isKeyDown = true
-    }
-  })
+function setupSwitch () {
+  if (isMobile) {
+    var isTapDown = false
+    let touch = touches(app.canvas, {
+      filtered: true,
+      parent: window
+    }).on('start', function () {
+      if (!isTapDown) flipSwitch()
+      isTapDown = true
+    }).on('end', function () {
+      if (isTapDown) flipSwitch()
+      isTapDown = false
+    })
+  } else {
+    window.addEventListener('keydown', ev => {
+      if (ev.keyCode === 32) {
+        ev.preventDefault()
+        if (!isKeyDown) flipSwitch()
+        isKeyDown = true
+      }
+    })
 
-  window.addEventListener('keyup', ev => {
-    if (ev.keyCode === 32) {
-      ev.preventDefault()
-      if (isKeyDown) flipSwitch()
-      isKeyDown = false
-    }
-  })
+    window.addEventListener('keyup', ev => {
+      if (ev.keyCode === 32) {
+        ev.preventDefault()
+        if (isKeyDown) flipSwitch()
+        isKeyDown = false
+      }
+    })
+  }
 }
