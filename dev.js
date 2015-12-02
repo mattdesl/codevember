@@ -16,6 +16,7 @@ const transforms = require('./config')
 const entryFilename = entry === 'grid'
   ? path.join(entry, 'index.js')
   : (entry + '.js')
+
 const entryFile = path.resolve(__dirname, 'src', entryFilename)
 budo(entryFile, {
   serve: 'static/' + entry + '.js',
@@ -23,6 +24,7 @@ budo(entryFile, {
   verbose: true,
   dir: __dirname,
   stream: process.stdout,
+  forceDefaultIndex: true,
   defaultIndex: function (opt) {
     var html = entry + '.html'
     if (!fs.existsSync(html)) return simpleHtml(opt)
@@ -35,6 +37,6 @@ budo(entryFile, {
       [ 'installify', { save: true } ]
     ].concat(transforms[entry] || [])
   }
-}).on('connect', function(ev) {
+}).on('connect', function (ev) {
   if (argv.open) open(ev.uri)
 })

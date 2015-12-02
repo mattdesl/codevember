@@ -97,6 +97,7 @@
     "hex-rgb": "^1.0.0",
     "icosphere": "^1.0.0",
     "img": "^1.0.0",
+    "inject-lr-script": "^1.1.0",
     "insert-css": "^0.2.0",
     "ios-safe-audio-context": "^1.0.1",
     "lerp": "^1.0.3",
