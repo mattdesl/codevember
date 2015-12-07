@@ -1,0 +1,92 @@
+body {
+  background: #fff;
+  font-family: 'Noto Sans', Helvetica, sans-serif;
+  font-weight: 400;
+  color: #fff;
+  margin: 0;
+  margin-top: 20px;
+  padding: 0;
+  text-align: center;
+}
+
+#grid {
+  text-align: left;
+  display: inline-block;
+  position: relative;
+  margin: 0;
+  margin-top: 20px;
+  padding: 0;
+}
+
+.opacity-fade {
+  -webkit-transition: opacity 1s ease-out;
+  -moz-transition: opacity 1s ease-out;
+  -ms-transition: opacity 1s ease-out;
+  -o-transition: opacity 1s ease-out;
+  transition: opacity 1s ease-out;
+}
+
+.image-loading {
+  opacity: 0.0;
+}
+.image-loaded {
+  opacity: 1.0;
+}
+
+.grid-item {
+  float: left;
+  display: inline;
+  position: absolute;
+  background: #CCCCCC;
+  margin: 0px;
+  cursor: pointer;
+}
+
+.grid-item > .image::after {
+  display: block;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  content: ' ';
+  background: rgba(0, 0, 0, 0.75);
+}
+
+.grid-item > .image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.grid-item > .title {
+  position: relative;
+  font-weight: 700;
+  text-align: center;
+  text-transform: lowercase;
+  margin-top: 20px;
+}
+
+.grid-item > .day {
+  font-size: 8px;
+  position: absolute;
+  opacity: 0.5;
+  top: 10px;
+  left: 10px;
+}
+
+.grid-item > .description {
+  position: relative;
+  font-weight: 400;
+  font-size: 11px;
+  text-align: center;
+  text-transform: lowercase;
+  margin-top: 5px;
+}
+
+.hashtag {
+}

@@ -26,7 +26,7 @@ budo(entryFile, {
   stream: process.stdout,
   forceDefaultIndex: true,
   defaultIndex: function (opt) {
-    var html = entry + '.html'
+    var html = entry === 'grid' ? 'index.html' : entry + '.html'
     if (!fs.existsSync(html)) return simpleHtml(opt)
     return fs.createReadStream(html)
   },
