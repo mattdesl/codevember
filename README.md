@@ -37,9 +37,6 @@ Desktop recommended for all demos. Some are mobile-friendly.
 [29](http://mattdesl.github.io/codevember/29.html) - 
 [30](http://mattdesl.github.io/codevember/30.html)
 
-
-
-
 ## Running
 
 Clone this repo, then:
