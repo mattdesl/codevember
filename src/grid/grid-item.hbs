@@ -1,12 +1,14 @@
-<div class="grid-item">
-  <div class="image opacity-fade"></div>
+<a class="grid-item" href="{{url}}" alt="{{name}}" target="_blank">
+  <div class="image transition-all"></div>
+  <div class="icons">
+    {{#if mobile}}
+      <img src="assets/iphone.svg" class="icon-mobile" />
+    {{/if}}
+    {{#if audio}}
+      <img src="assets/audio.svg" class="icon-audio" />
+    {{/if}}
+  </div>
   <div class="day">{{day}}</div>
-  <div class="title">{{name}}</div>
   <div class="description">{{description}}</div>
-  {{#if mobile}}
-    <div class="icon-mobile"></div>
-  {{/if}}
-  {{#if audio}}
-    <div class="icon-audio"></div>
-  {{/if}}
-</div>
+  <div class="title">{{name}}</div>
+</a>

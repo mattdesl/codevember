@@ -1,6 +1,4 @@
 const css = require('dom-css')
-const rows = 7
-const cols = 4
 const clamp = require('clamp')
 
 module.exports = function gridItems (grid, cells, opt = {}) {
@@ -11,15 +9,29 @@ module.exports = function gridItems (grid, cells, opt = {}) {
   const minSize = opt.minSize || [ -Infinity, -Infinity ]
   const maxCellSize = opt.maxCellSize || [ Infinity, Infinity ]
   const minCellSize = opt.minCellSize || [ -Infinity, -Infinity ]
+  const style = opt.style || (() => {})
+  const solve = opt.solve || (() => {
+    return [ 4, 7 ]
+  })
 
-  resize()
-  window.addEventListener('resize', resize)
-
-  return {
-    resize
+  const api = {
+    padding, margin, resize
   }
 
+  process.nextTick(resize)
+  window.addEventListener('resize', resize)
+
+  return api
+
   function resize () {
+    const [ cols, rows ] = solve()
+    resizeTo(cols, rows)
+  }
+
+  function resizeTo (cols, rows) {
+    const padding = api.padding
+    const margin = api.margin
+    console.log(margin, padding)
     const padx = padding * (cols + 1)
     const pady = padding * (rows + 1)
 
@@ -48,6 +60,7 @@ module.exports = function gridItems (grid, cells, opt = {}) {
         width: cellWidth,
         height: cellHeight
       })
+      style(cell, cellWidth, cellHeight)
     })
   }
 }
