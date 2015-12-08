@@ -116,9 +116,10 @@ body {
 .info-container {
   margin: 0 auto;
   text-align: center;
-  max-width: 350px;
+  max-width: 450px;
 }
 .hashtag, .info, .author {
+  margin: 0 20px;
   display: block;
   text-align: left;
 }
