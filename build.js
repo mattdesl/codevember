@@ -15,9 +15,15 @@ const transformConfig = require('./config')
 var entry = argv._[0]
 if (typeof entry === 'number') {
   entry = String(entry)
+} else if (!entry) {
+  entry = 'grid'
 }
 
-if (entry) {
+var isGrid = entry === 'grid'
+
+if (entry && isGrid) {
+  files = [ path.join('grid', 'index.js') ]
+} else if (entry) {
   files = files.filter(function (f) {
     return path.basename(f, '.js') === entry
   })
@@ -38,7 +44,8 @@ function runBuild (f) {
     })
     b.transform(require('babelify').configure({ presets: 'es2015' }))
     b.plugin(require('bundle-collapser/plugin'))
-    var base = path.basename(f, '.js')
+    var base = isGrid ? 'grid' : path.basename(f, '.js')
+    if (isGrid) f = 'grid.js'
     var transforms = (transformConfig[base] || [])
     transforms.forEach(function (t) {
       b.transform(t)

@@ -187,7 +187,7 @@
     "babel-preset-es2015": "^6.1.18",
     "babelify": "^7.2.0",
     "browserify": "^12.0.1",
-    "budo": "^6.0.0",
+    "budo": "^7.0.2",
     "bundle-collapser": "^1.2.1",
     "dirlist": "^1.0.2",
     "glslify": "^3.1.0",
@@ -207,7 +207,7 @@
   "scripts": {
     "palette": "node src/grid/palette.js assets/thumbs/ > assets/thumb-palettes.json",
     "start": "node dev.js",
-    "build": "node build.js"
+    "build": "node build.js grid && node build.js"
   },
   "glslify": {
     "transform": [

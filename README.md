@@ -59,6 +59,13 @@ To build all demos:
 npm run build
 ```
 
+To run/build main grid:
+
+```sh
+npm start
+node build.js grid
+```
+
 ## License
 
 MIT, see [LICENSE.md](http://github.com/mattdesl/codevember/blob/master/LICENSE.md) for details.
