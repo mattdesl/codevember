@@ -1,13 +1,12 @@
 global.THREE = require('three')
 
 const qs = require('query-string')
+const touches = require('touches')
 
 const query = qs.parse(window.location.search)
 const interactive = String(query.interactive) !== 'false'
 
-const bezier = require('adaptive-bezier-curve')
 const Line = require('./gl/ThreeLine25D')(THREE)
-const BasicShader = require('three-line-2d/shaders/basic')(THREE)
 const glslify = require('glslify')
 
 const sphere = require('icosphere')(2)
@@ -56,6 +55,7 @@ app.scene.add(inner)
 
 let time = 0
 app.on('tick', dt => {
+  dt = Math.min(dt, 30)
   dt /= 1000
   time += dt
 
@@ -66,6 +66,20 @@ app.on('tick', dt => {
   material.uniforms.iGlobalTime.value = time
   material2.uniforms.iGlobalTime.value = time
 })
+
+
+
+if (!interactive) {
+  app.once('tick', () => {
+    app.stop()
+  })
+
+  touches(window, { filtered: true }).on('start', ev => {
+    app.start()
+  }).on('end', ev => {
+    app.stop()
+  })
+}
 
 function createMaterial () {
   return new THREE.RawShaderMaterial({
