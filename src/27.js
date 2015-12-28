@@ -67,8 +67,6 @@ app.on('tick', dt => {
   material2.uniforms.iGlobalTime.value = time
 })
 
-
-
 if (!interactive) {
   app.once('tick', () => {
     app.stop()

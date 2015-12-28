@@ -10,6 +10,7 @@ const getContours = require('svg-path-contours')
 const SimplexNoise = require('simplex-noise')
 const once = require('once')
 const timeout = require('callback-timeout')
+const qs = require('query-string')
 
 const canvas = document.createElement('canvas')
 const simplex = new SimplexNoise()
@@ -18,13 +19,16 @@ const isMobile = require('./is-mobile')()
 const ctx = canvas.getContext('2d')
 const scale = window.devicePixelRatio
 
+const query = qs.parse(window.location.search)
+const startCrazy = String(query.crazy) !== 'false'
+
+let crazy = true
 let svgPaths
 let positions
 let current = 0
 let timer
 let strokes = 4
-let crazy = true
-let tick = 0
+let tick = startCrazy ? 0 : 1
 const meshes = []
 let width, height, radius, shape
 
@@ -76,7 +80,7 @@ function start () {
       }
       render()
     }, 1000 / 60)
-    
+
     const next = once(() => {
       running = false
       clearInterval(timer)
