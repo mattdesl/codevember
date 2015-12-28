@@ -1,5 +1,10 @@
 global.THREE = require('three')
 
+const qs = require('query-string')
+
+const query = qs.parse(window.location.search)
+const interactive = String(query.interactive) !== 'false'
+
 const bezier = require('adaptive-bezier-curve')
 const Line = require('./gl/ThreeLine25D')(THREE)
 const BasicShader = require('three-line-2d/shaders/basic')(THREE)
@@ -13,7 +18,9 @@ var app = require('./three-orbit-app')({
   position: [ 0, 0, -1 ],
   distance: 3,
   distanceBounds: [ 1, 100 ],
-  antialias: true
+  antialias: true,
+  zoom: interactive,
+  rotate: interactive
 })
 app.renderer.setClearColor('#dd6524', 1)
 
