@@ -22,6 +22,7 @@ var app = require('./three-orbit-app')({
   rotate: interactive
 })
 app.renderer.setClearColor('#dd6524', 1)
+document.querySelector('.loader').style.display = 'none'
 
 const cells = triangulate(sphere.positions)
 const path = cells.map(cell => {
