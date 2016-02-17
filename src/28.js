@@ -11,6 +11,8 @@ const app = require('./three-orbit-app')({
   distance: 4
 })
 
+document.querySelector('.loader').style.display = 'none'
+
 const potCanvas = document.createElement('canvas')
 potCanvas.width = 1024
 potCanvas.height = potCanvas.width / 2

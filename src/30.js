@@ -34,6 +34,8 @@ const app = createOrbit({
   pinch: false
 })
 
+document.querySelector('.loader').style.display = 'none'
+
 // for OSX and such
 process.nextTick(() => app.renderer.getContext().lineWidth(1.5))
 

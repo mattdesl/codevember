@@ -111,10 +111,12 @@ function start () {
     loop: true,
     buffer: isSafari
   })
+  const loader = document.querySelector('.loader')
   audio.once('load', () => {
     analyser = glAudioAnalyser(gl, audio.node, audioContext)
     audio.play()
     app.start()
+    loader.style.display = 'none'
   })
 }
 
