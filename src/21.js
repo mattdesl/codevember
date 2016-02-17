@@ -16,9 +16,10 @@ const vignette = require('gl-vignette-background')
 const hexRgbByte = require('hex-rgb')
 const hexRgb = (str) => hexRgbByte(str).map(x => x / 255)
 
+const isSafari = /Safari/i.test(navigator.userAgent) && !/Chrome/i.test(navigator.userAgent)
 const glslify = require('glslify')
 const steps = 200
-const segments = 100
+const segments = isSafari ? 50 : 100
 const radius = 0.1
 const thickness = 0.01
 const src = 'assets/highroad.mp3'
@@ -49,6 +50,7 @@ const canvas = gl.canvas
 document.body.appendChild(canvas)
 
 const AudioContext = window.AudioContext || window.webkitAudioContext
+const audioPlayer = require('web-audio-player')
 const supportedTextures = gl.getParameter(gl.MAX_VERTEX_TEXTURE_IMAGE_UNITS)
 
 const app = require('canvas-loop')(canvas, {
@@ -102,15 +104,18 @@ function start () {
   if (isMobile()) {
     return desktopOnly()
   }
-
-  const audio = new window.Audio()
-  audio.loop = true
-  audio.addEventListener('canplay', once(() => {
-    analyser = glAudioAnalyser(gl, audio)
+  
+  const audioContext = new AudioContext()
+  const audio = audioPlayer(src, {
+    context: audioContext,
+    loop: true,
+    buffer: isSafari
+  })
+  audio.once('load', () => {
+    analyser = glAudioAnalyser(gl, audio.node, audioContext)
     audio.play()
     app.start()
-  }))
-  audio.src = src
+  })
 }
 
 let time = 0

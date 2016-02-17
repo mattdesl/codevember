@@ -10,6 +10,7 @@ const AudioContext = window.AudioContext || window.webkitAudioContext
 
 // dumb mobile test
 const isMobile = /(iPad|iPhone|Android)/i.test(navigator.userAgent)
+const defaultSrc = 'https://api.soundcloud.com/tracks/198926710/stream?client_id=b95f61a90da961736c03f659c03cb0cc'
 
 require('soundcloud-badge')({
   client_id: 'b95f61a90da961736c03f659c03cb0cc',
@@ -17,6 +18,8 @@ require('soundcloud-badge')({
   dark: true,
   getFonts: true
 }, function (err, src, data, div) {
+  if (err) console.error(err)
+
   const app = createOrbitViewer({
     clearColor: 0xffffff,
     clearAlpha: 1,
@@ -33,16 +36,10 @@ require('soundcloud-badge')({
   app.controls.noZoom = true
 
   var play = document.querySelector('.play')
-  let audio
-  if (!err) {
-    audio = new Audio()
-    audio.crossOrigin = 'Anonymous'
-    audio.src = src
-  } else {
-    console.warn("No music!")
-    console.error(err)
-  }
-  
+  let audio = new Audio()
+  audio.crossOrigin = 'Anonymous'
+  audio.src = src || defaultSrc
+
   const geometry = new THREE.TorusGeometry(0.95, 0.15, 65, 200)
   const freqLow = newArray(geometry.vertices.length, 0.0)
   const freqMid = freqLow.slice()
